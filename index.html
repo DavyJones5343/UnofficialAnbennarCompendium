@@ -5840,6 +5840,17 @@ function wmApplyTransform() {
   canvas.style.transform = 'translate(' + wmOffX + 'px, ' + wmOffY + 'px) scale(' + wmScale + ')';
 }
 
+function wmMinScale() {
+  const wrap = document.getElementById('world-map-wrap');
+  const canvas = document.getElementById('world-map-canvas');
+  if (!wrap || !canvas) return 0.8;
+  const cw = wrap.clientWidth, ch = wrap.clientHeight;
+  const baseW = canvas.offsetWidth, baseH = canvas.offsetHeight;
+  if (!baseW || !baseH) return 0.8;
+  // Smallest scale where the map still fully covers the container in both dimensions
+  return Math.max(cw / baseW, ch / baseH);
+}
+
 function wmResetView() {
   const wrap = document.getElementById('world-map-wrap');
   if (!wrap) return;
@@ -5871,7 +5882,7 @@ function wmZoom(dir) {
   if (!wrap) return;
   const cx = wrap.clientWidth / 2, cy = wrap.clientHeight / 2;
   const factor = dir > 0 ? 1.3 : 1 / 1.3;
-  const newScale = Math.max(0.8, Math.min(20, wmScale * factor));
+  const newScale = Math.max(wmMinScale(), Math.min(20, wmScale * factor));
   wmOffX = cx - (cx - wmOffX) * (newScale / wmScale);
   wmOffY = cy - (cy - wmOffY) * (newScale / wmScale);
   wmScale = newScale;
@@ -5951,18 +5962,19 @@ function wmSetupInteraction(wrap) {
     const rect = wrap.getBoundingClientRect();
     const mx = e.clientX - rect.left, my = e.clientY - rect.top;
     const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-    const newScale = Math.max(0.8, Math.min(20, wmScale * factor));
+    const newScale = Math.max(wmMinScale(), Math.min(20, wmScale * factor));
     wmOffX = mx - (mx - wmOffX) * (newScale / wmScale);
     wmOffY = my - (my - wmOffY) * (newScale / wmScale);
     wmScale = newScale;
     wmApplyTransform();
-  }, { passive: false });
+}, { passive: false });
 
   addPinchZoom(wrap, {
-    min: 0.8, max: 20,
+    min: wmMinScale(),   // was: 0.8
+    max: 20,
     getScale: () => wmScale,
     getOff: () => [wmOffX, wmOffY],
-    set: (s, x, y) => { wmScale = s; wmOffX = x; wmOffY = y; wmApplyTransform(); }
+    set: (s, x, y) => { wmScale = Math.max(wmMinScale(), s); wmOffX = x; wmOffY = y; wmApplyTransform(); }
   });
 }
 
