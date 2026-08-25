@@ -2168,11 +2168,14 @@ function updateFilterDropdowns() {
 
     //sel.value = values.has(currentVal) ? currentVal : '';
 
-    const stillValid = values.has(currentVal);
-    sel.value = stillValid ? currentVal : '';
+    //const stillValid = values.has(currentVal);
+    //sel.value = stillValid ? currentVal : '';
+
+    // Keep the current selection even if it no longer has any matches
+    sel.value = currentVal || '';
 
     // Reset the selected-state styling if the option was invalidated
-    if (stillValid) {
+    if (currentVal) {
       sel.classList.add('has-selection');
     } else {
       sel.classList.remove('has-selection');
@@ -2220,6 +2223,15 @@ function updateFilterDropdowns() {
     rSel.appendChild(grp);
   });
   //rSel.value = validRegions.has(region) ? region : '';
+
+  rSel.value = region || '';
+
+  if (region) {
+    rSel.classList.add('has-selection');
+  } else {
+    rSel.classList.remove('has-selection');
+  }
+
   const regionStillValid = validRegions.has(region);
 
   rSel.value = regionStillValid ? region : '';
