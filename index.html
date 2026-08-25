@@ -279,6 +279,13 @@ body {
   cursor: pointer;
   transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
+#region-select.has-selection,
+#culture-select.has-selection,
+#religion-select.has-selection,
+#tech-select.has-selection,
+#gov-select.has-selection {
+  border-color: var(--gold-lighter);
+}
 .filter-select:hover {
   border-color: var(--gold-darker);
 }
@@ -2333,12 +2340,21 @@ function clearAllFilters() {
   searchInput.value = '';
   searchInput.classList.remove('has-text');
 
+
+   const selectIds = [
+    'region-select',
+    'culture-select',
+    'religion-select',
+    'tech-select',
+    'gov-select'
+  ];
+
+  selectIds.forEach(id => {
+    const select = document.getElementById(id);
+    select.value = '';
+    select.classList.remove('has-selection');
+  });
   
-  document.getElementById('region-select').value = '';
-  document.getElementById('culture-select').value = '';
-  document.getElementById('religion-select').value = '';
-  document.getElementById('tech-select').value = '';
-  document.getElementById('gov-select').value = '';
   activeFilters.clear();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   applyFilters();
@@ -2422,8 +2438,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   ['region-select','culture-select','religion-select','tech-select','gov-select'].forEach(id => {
-    document.getElementById(id).addEventListener('change', applyFilters);
+    const select = document.getElementById(id);
+
+    select.addEventListener('change', () => {
+      select.classList.toggle('has-selection', select.value !== '');
+      applyFilters();
+    });
   });
+
+
+
   document.getElementById('mobile-toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('mobile-open');
   });
