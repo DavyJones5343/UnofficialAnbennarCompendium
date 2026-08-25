@@ -1984,6 +1984,9 @@ function classifyMissions() {
 // }
 
 function countrySorter(a, b) {
+  if (!a.name && !b.name) return 0;
+  if (!a.name) return 1;   // push blank names to the end
+  if (!b.name) return -1;
   return a.name.localeCompare(b.name);
 }
 
