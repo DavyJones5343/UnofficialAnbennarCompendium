@@ -1972,14 +1972,18 @@ function classifyMissions() {
   });
 }
 
+// function countrySorter(a, b) {
+//   const wa = WIKI[a.tag], wb = WIKI[b.tag];
+//   const hasWikiA = wa && wa.found ? 1 : 0;
+//   const hasWikiB = wb && wb.found ? 1 : 0;
+//   if (hasWikiA !== hasWikiB) return hasWikiB - hasWikiA;
+//   const sizeA = wa ? (wa.page_size || wa.page_length || 0) : 0;
+//   const sizeB = wb ? (wb.page_size || wb.page_length || 0) : 0;
+//   if (sizeA !== sizeB) return sizeB - sizeA;
+//   return a.name.localeCompare(b.name);
+// }
+
 function countrySorter(a, b) {
-  const wa = WIKI[a.tag], wb = WIKI[b.tag];
-  const hasWikiA = wa && wa.found ? 1 : 0;
-  const hasWikiB = wb && wb.found ? 1 : 0;
-  if (hasWikiA !== hasWikiB) return hasWikiB - hasWikiA;
-  const sizeA = wa ? (wa.page_size || wa.page_length || 0) : 0;
-  const sizeB = wb ? (wb.page_size || wb.page_length || 0) : 0;
-  if (sizeA !== sizeB) return sizeB - sizeA;
   return a.name.localeCompare(b.name);
 }
 
