@@ -5811,18 +5811,25 @@ async function renderWorldMap() {
 
 function clampWorldMapOffset() {
   const wrap = document.getElementById('world-map-wrap');
-  if (!wrap) return;
+  const canvas = document.getElementById('world-map-canvas');
+  if (!wrap || !canvas) return;
+
   const cw = wrap.clientWidth, ch = wrap.clientHeight;
-  const effW = cw * wmScale;
-  const effH = MAP_H * wmFitScale * wmScale;
+  // Use the canvas's actual CSS size (unaffected by transform) rather than
+  // recomputing it from MAP_W/MAP_H/wmFitScale, which can go stale.
+  const baseW = canvas.offsetWidth;
+  const baseH = canvas.offsetHeight;
 
-  const bx1 = 0, bx2 = cw - effW;
-  const loX = Math.min(bx1, bx2), hiX = Math.max(bx1, bx2);
-  wmOffX = Math.min(hiX, Math.max(loX, wmOffX));
+  const effW = baseW * wmScale;
+  const effH = baseH * wmScale;
 
-  const by1 = 0, by2 = ch - effH;
-  const loY = Math.min(by1, by2), hiY = Math.max(by1, by2);
-  wmOffY = Math.min(hiY, Math.max(loY, wmOffY));
+  const minX = Math.min(0, cw - effW);
+  const maxX = Math.max(0, cw - effW);
+  wmOffX = Math.min(maxX, Math.max(minX, wmOffX));
+
+  const minY = Math.min(0, ch - effH);
+  const maxY = Math.max(0, ch - effH);
+  wmOffY = Math.min(maxY, Math.max(minY, wmOffY));
 }
 
 function wmApplyTransform() {
