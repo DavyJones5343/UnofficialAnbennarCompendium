@@ -440,31 +440,37 @@ body {
 }
 
 
-/* --------------------------------------------------BADGES--------------------------------------------- */
+/* --------------------------------------------------HAS MT / HAS IDEAS FILTER INDEX BADGES--------------------------------------------- */
 .country-item .badges {
   display: flex;
   gap: 3px;
   flex-shrink: 0;
+  padding-top: 2px;
 }
 .badge-dot {
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   display: inline-block;
 }
 .badge-dot.missions {
-  background: var(--blue);
+  background: var(--text-darker);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
+  height: 10px;
+  width: 10px;
 }
+
+
+
+
 .badge-dot.ideas {
   background: var(--gold-lighter);
   display: none;
 }
-
-
-
-
-
-
-
 
 
 
@@ -903,6 +909,11 @@ body {
   font-weight: 500;
   color: var(--text-darker);
   margin-left: 5px;
+}
+.tab-btn .tab-star {
+  font-size: 12px;
+  color: var(--gold-lighter);
+  margin-left: 6px;
 }
 
 
@@ -4335,7 +4346,7 @@ function selectCountry(tag) {
 
   if (hasIdeas) { html += `<button class="tab-btn${!hasLore ? ' active' : ''}" data-tab="ideas">Ideas</button>`; firstTab = firstTab || 'ideas'; }
 
-  if (hasMissions) { html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="count">${c.missions.length}</span></button>`; firstTab = firstTab || 'missions'; }
+  if (hasMissions) { html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="tab-star">&#9733;</span><span class="count">${c.missions.length}</span></button>`; firstTab = firstTab || 'missions'; }
   const hasMap = PROVINCE_OWNERS && PROVINCE_OWNERS[tag] && PROVINCE_OWNERS[tag].length > 0;
 
   if (hasMap) { html += `<button class="tab-btn" data-tab="map">Location</button>`; }
