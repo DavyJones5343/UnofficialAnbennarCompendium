@@ -1193,6 +1193,14 @@ body {
   color: var(--text-lighter);
 }
 
+.filter-btn:disabled,
+.filter-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
 /* --------------------MISSION TEXT OVERVIEWS-------------------- */
 #mission-modal-overlay {
   display: none;
@@ -2272,23 +2280,20 @@ function updateFilterDropdowns() {
   }
 }
 
-function passesFilter(c) {
-  if (activeFilters.size === 0) return true;
+function passesFilter(c, filters) {
+  filters = filters || activeFilters;
+  if (filters.size === 0) return true;
   const s = STATUS[c.tag] || {};
-  // Direct-lookup intent: when a search query is active, ignore the "what kind
-  // of nation" filters so users can always
-  // find a specific tag by name. Independent qualifiers (missions/played) stay.
   const hasSearch = document.getElementById('search-input').value.trim() !== '';
   if (!hasSearch) {
-    if (activeFilters.has('PlayableIn1444') && !(s.status === 'playable' || s.status === 'both')) return false;
-    if (activeFilters.has('Formable') && !(s.status === 'formable' || s.status === 'both')) return false;
-    if (activeFilters.has('EventSpawned') && !(s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0)) return false;
+    if (filters.has('PlayableIn1444') && !(s.status === 'playable' || s.status === 'both')) return false;
+    if (filters.has('Formable') && !(s.status === 'formable' || s.status === 'both')) return false;
+    if (filters.has('EventSpawned') && !(s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0)) return false;
   }
-  if (activeFilters.has('HasMT') && !(c.missions && c.missions.length > 0)) return false;
-  if (activeFilters.has('UniqueMT') && c.mission_class !== 'unique') return false;
-  if (activeFilters.has('GenericMT') && c.mission_class !== 'regional') return false;
-  if (activeFilters.has('needs-lore')) {
-    // Has content (missions or tag-specific ideas) but no startup lore entry
+  if (filters.has('HasMT') && !(c.missions && c.missions.length > 0)) return false;
+  if (filters.has('UniqueMT') && c.mission_class !== 'unique') return false;
+  if (filters.has('GenericMT') && c.mission_class !== 'regional') return false;
+  if (filters.has('needs-lore')) {
     const hasMissions = c.missions && c.missions.length > 0;
     const tagIdeas = (c.ideas && c.ideas.ideas) ? c.ideas.ideas.filter(i => i && i.name && i.name.startsWith(c.tag + '_')).length : 0;
     const hasContent = hasMissions || tagIdeas > 0;
@@ -2296,9 +2301,66 @@ function passesFilter(c) {
     const hasLore = !!(lore && lore.lore && lore.lore.trim());
     if (!(hasContent && !hasLore)) return false;
   }
-  if (activeFilters.has('played') && !PLAYED.has(c.tag)) return false;
-  if (activeFilters.has('unplayed') && PLAYED.has(c.tag)) return false;
+  if (filters.has('played') && !PLAYED.has(c.tag)) return false;
+  if (filters.has('unplayed') && PLAYED.has(c.tag)) return false;
   return true;
+}
+
+function countForFilters(filters) {
+  const query = document.getElementById('search-input').value.toLowerCase().trim();
+  const region = document.getElementById('region-select').value;
+  const culture = document.getElementById('culture-select').value;
+  const religion = document.getElementById('religion-select').value;
+  const tech = document.getElementById('tech-select').value;
+  const gov = document.getElementById('gov-select').value;
+  const hasSearch = query.length > 0;
+  const eventSpawnedActive = filters.has('EventSpawned');
+  let count = 0;
+
+  countries.forEach(c => {
+    const w = WIKI[c.tag];
+    const hasWiki = w && w.found && (w.page_size || w.page_length || 0) > 500;
+    const hasMissions = c.missions && c.missions.length > 0;
+    const hasIdeas = c.ideas && c.ideas.ideas && c.ideas.ideas.length > 0;
+    if (!hasWiki && !hasMissions && !hasIdeas && !hasSearch && !eventSpawnedActive) return;
+
+    if (!passesFilter(c, filters)) return;
+    if (culture && c.culture_group !== culture) return;
+    if (religion && c.religion !== religion) return;
+    if (tech && c.technology_group !== tech) return;
+    if (gov && c.government !== gov) return;
+    if (region && !matchesRegionFilter(c, region)) return;
+
+    if (query) {
+      const score = Math.max(
+        fuzzyScore(query, c.name), fuzzyScore(query, c.tag), fuzzyScore(query, c.primary_culture),
+        fuzzyScore(query, c.religion), fuzzyScore(query, c.culture_group),
+        fuzzyScore(query, c.government), fuzzyScore(query, c.technology_group), fuzzyScore(query, c.adjective)
+      );
+      if (score === 0) return;
+    }
+    count++;
+  });
+  return count;
+}
+
+function updateFilterButtonStates() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const f = btn.dataset.filter;
+    if (activeFilters.has(f)) {
+      // Always allow turning an active filter back off
+      btn.disabled = false;
+      btn.classList.remove('disabled');
+      btn.title = '';
+      return;
+    }
+    const hypothetical = new Set(activeFilters);
+    hypothetical.add(f);
+    const wouldBeEmpty = countForFilters(hypothetical) === 0;
+    btn.disabled = wouldBeEmpty;
+    btn.classList.toggle('disabled', wouldBeEmpty);
+    btn.title = wouldBeEmpty ? 'No nations match this combination of filters' : '';
+  });
 }
 
 function applyFilters() {
@@ -2361,6 +2423,7 @@ function applyFilters() {
   renderCountryList();
   renderActiveFilters();
   updateFilterDropdowns();
+  updateFilterButtonStates();
   scheduleWorldMapRender();
 }
 
