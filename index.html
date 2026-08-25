@@ -1937,7 +1937,7 @@ const MAP_W = 5632, MAP_H = 2048;
 let countries = [];
 let filteredCountries = [];
 let selectedTag = null;
-let renderLimit = 200;
+let renderLimit = 310;
 let activeFilters = new Set();
 // Played countries — persisted in localStorage
 let PLAYED = new Set(JSON.parse(localStorage.getItem('anbennar_played') || '[]'));
@@ -2419,7 +2419,7 @@ function applyFilters() {
   }
 
   filteredCountries = scored.map(s => s.c);
-  renderLimit = 200;
+  renderLimit = 310;
   renderCountryList();
   renderActiveFilters();
   updateFilterDropdowns();
@@ -5809,9 +5809,26 @@ async function renderWorldMap() {
   }
 }
 
+function clampWorldMapOffset() {
+  const wrap = document.getElementById('world-map-wrap');
+  if (!wrap) return;
+  const cw = wrap.clientWidth, ch = wrap.clientHeight;
+  const effW = cw * wmScale;
+  const effH = MAP_H * wmFitScale * wmScale;
+
+  const bx1 = 0, bx2 = cw - effW;
+  const loX = Math.min(bx1, bx2), hiX = Math.max(bx1, bx2);
+  wmOffX = Math.min(hiX, Math.max(loX, wmOffX));
+
+  const by1 = 0, by2 = ch - effH;
+  const loY = Math.min(by1, by2), hiY = Math.max(by1, by2);
+  wmOffY = Math.min(hiY, Math.max(loY, wmOffY));
+}
+
 function wmApplyTransform() {
   const canvas = document.getElementById('world-map-canvas');
   if (!canvas) return;
+  clampWorldMapOffset(); // NEW CLAMP WORLD MAP XXXX
   canvas.style.transformOrigin = '0 0';
   canvas.style.transform = 'translate(' + wmOffX + 'px, ' + wmOffY + 'px) scale(' + wmScale + ')';
 }
