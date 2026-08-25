@@ -1848,6 +1848,10 @@ body {
 <script>
 // --- DATA ---
 let DATA = {}, RELIGIONS = {}, WIKI = {}, REGIONS = {}, TRIGGERS = {}, STATUS = {}, ICON_MAP = {}, PROVINCES = {}, MODIFIERS = {}, STARTUP_LORE = {}, PROVINCE_OWNERS = {}, DIPLOMACY = {}, PROV_DETAILS = {}, AREA_DATA = {}, EVENT_NAMES = {}, GREAT_PROJECTS = {}, SCRIPTED = {}, NAMES = {};
+
+// ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+let MISSION_LOC_TEXT = '';
+
 // Map state
 let mapBaseImg = null, mapIdImg = null, mapIdData = null, mapBounds = null;
 let mapScale = 1, mapOffX = 0, mapOffY = 0, mapCurrentTag = null;
@@ -1885,7 +1889,7 @@ async function loadData() {
   el.innerHTML = '<div class="loading">Loading data...</div>';
   try {
     const v = '1785501791';
-    const [d1, d2, d3, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19] = await Promise.all([
+    const [d1, d2, d3, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20] = await Promise.all([
       fetch('anbennar_data.json?v='+v).then(r => r.json()),
       fetch('religions_data.json?v='+v).then(r => r.json()),
       fetch('wiki_data.json?v='+v).then(r => r.json()),
@@ -1904,8 +1908,10 @@ async function loadData() {
       fetch('great_projects.json?v='+v).then(r => r.json()).catch(() => ({})),
       fetch('scripted_defs.json?v='+v).then(r => r.json()).catch(() => ({})),
       fetch('display_names.json?v='+v).then(r => r.json()).catch(() => ({})),
+      fetch('anb_repurposed_dlc_buttons_l_english.yml?v='+v).then(r => r.text()).catch(() => ''),
     ]);
     DATA = d1; RELIGIONS = d2; WIKI = d3; REGIONS = d5; TRIGGERS = d6; STATUS = d7; ICON_MAP = d8; PROVINCES = d9; MODIFIERS = d10 || {}; STARTUP_LORE = d11 || {}; PROVINCE_OWNERS = d12 || {}; DIPLOMACY = d13 || {}; PROV_DETAILS = d14 || {}; AREA_DATA = d15 || {}; EVENT_NAMES = d16 || {}; GREAT_PROJECTS = d17 || {}; SCRIPTED = d18 || {}; NAMES = d19 || {};
+    MISSION_LOC_TEXT = d20 || '';
 
     countries = Object.values(DATA);
     countries.sort(countrySorter);
@@ -4288,6 +4294,10 @@ function selectCountry(tag) {
   // Missions tab
   if (hasMissions) {
     html += `<div class="tab-content${firstTab === 'missions' ? ' active' : ''}" data-tab="missions">`;
+    const missionTreeText = getMissionTreeText(c.tag, MISSION_LOC_TEXT);
+    if (missionTreeText) {
+      html += `<div class="mission-tree-text" data-tag="${esc(c.tag)}"><p>${esc(missionTreeText).replace(/\n/g, '<br>')}</p></div>`;
+    }
     html += renderMissions(c);
     html += '</div>';
   }
@@ -4606,6 +4616,52 @@ function renderMissions(c) {
   });
 
   return html;
+}
+
+// Generic (shared) mission tree keys — the prefix used in both mission
+// group names (e.g. "AYN_Branch_1") and the loc file (LANDING_missions_AYN_TEXT)
+const GENERIC_MISSION_KEYS = [
+  'caamas', 'peitar', 'selphereg', 'snecboth', 'tuathak', 'dotimism',
+  'cannorian_kobold', 'dwarven_adventurer', 'escanni_adventurer',
+  'escanni_goblin', 'escanni_orc', 'vyzemby', 'kaino', 'ghankedhen',
+  'raghamidesh', 'ghavanaj', 'undergrowth_goblin', 'xiaken', 'shuuvush',
+  'fathide_ogres', 'wild_ogres', 'centaur', 'triunic', 'primal_harimari',
+  'AYN', 'iochand'
+];
+
+function findMissionTreeKey(tag, yamlText) {
+  // 1. Try direct tag match (unique trees — the common case)
+  if (new RegExp(`LANDING_missions_${tag}_TEXT:0`).test(yamlText)) {
+    return tag;
+  }
+  // 2. Fall back to generic/shared trees — match this tag's mission
+  // group names against known generic key prefixes
+  const c = DATA[tag];
+  if (!c || !c.missions) return null;
+  const groupNames = new Set(c.missions.map(m => m.group || ''));
+  for (const key of GENERIC_MISSION_KEYS) {
+    for (const g of groupNames) {
+      if (g.toLowerCase().startsWith(key.toLowerCase())) return key;
+    }
+  }
+  return null;
+}
+
+function getMissionTreeText(tag, yamlText) {
+  const key = findMissionTreeKey(tag, yamlText);
+  if (!key) return null;
+  const re = new RegExp(`LANDING_missions_${key}_TEXT:0\\s*"([^"]*(?:\\\\.[^"]*)*)"`);
+  const match = yamlText.match(re);
+  if (!match) return null;
+  return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+}
+
+function renderMissionText(tag, yamlText) {
+  const text = getMissionTreeText(tag, yamlText);
+  if (!text) return '<p>No custom mission tree found for this tag.</p>';
+  return `<div class="mission-tree-text" data-tag="${esc(tag)}">
+    <p>${esc(text).replace(/\n/g, '<br>')}</p>
+  </div>`;
 }
 
 function showMissionDetail(tag, missionId) {
