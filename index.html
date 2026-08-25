@@ -4312,7 +4312,7 @@ function selectCountry(tag) {
     html += `<div class="tab-content${firstTab === 'missions' ? ' active' : ''}" data-tab="missions">`;
     const missionTreeText = getMissionTreeText(c.tag, MISSION_LOC_TEXT);
     if (missionTreeText) {
-      html += `<div class="mission-tree-text" data-tag="${esc(c.tag)}"><p>${esc(missionTreeText).replace(/\n/g, '<br>')}</p></div>`;
+      html += `<div class="mission-tree-text" data-tag="${esc(c.tag)}">${formatMissionTreeText(missionTreeText)}</div>`;
     }
     html += renderMissions(c);
     html += '</div>';
@@ -4678,6 +4678,37 @@ function renderMissionText(tag, yamlText) {
   return `<div class="mission-tree-text" data-tag="${esc(tag)}">
     <p>${esc(text).replace(/\n/g, '<br>')}</p>
   </div>`;
+}
+
+// Renders mission tree flavor text. Lines containing §Y...§! markers
+// (used for credits like "§YDesigner§!: Runehawk") become <h4> headers
+// with the markers stripped; everything else stays as normal paragraph text.
+function formatMissionTreeText(text) {
+  const lines = text.split('\n');
+  let html = '';
+  let paraBuffer = [];
+
+  function flushPara() {
+    if (paraBuffer.length) {
+      html += `<p>${paraBuffer.map(esc).join('<br>')}</p>`;
+      paraBuffer = [];
+    }
+  }
+
+  lines.forEach(line => {
+    if (/§Y.*?§!/.test(line)) {
+      flushPara();
+      const clean = line.replace(/§Y/g, '').replace(/§!/g, '');
+      html += `<h4>${esc(clean)}</h4>`;
+    } else if (line.trim() === '') {
+      flushPara();
+    } else {
+      paraBuffer.push(line);
+    }
+  });
+  flushPara();
+
+  return html;
 }
 
 function showMissionDetail(tag, missionId) {
