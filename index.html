@@ -1887,7 +1887,7 @@ body {
       <button class="filter-btn" data-filter="EventSpawned">Event Spawned</button>
       <button class="filter-btn" data-filter="HasMT">Has MT</button>
       <button class="filter-btn" data-filter="UniqueMT">Unique MT</button>
-      <button class="filter-btn" data-filter="GenericMT">Generic MT</button>
+      <button class="filter-btn" data-filter="GenericMT">Region Shared MT</button>
       <!-- <button class="filter-btn" data-filter="needs-lore" title="Countries with missions or tag-specific ideas authored but no startup lore in startup_lore.json — these are upstream content gaps where lore writers could contribute">Needs Lore</button> -->
       <!-- <button class="filter-btn" data-filter="played">Played</button> -->
       <!-- <button class="filter-btn" data-filter="unplayed">Unplayed</button> -->
@@ -2164,15 +2164,29 @@ function updateFilterDropdowns() {
   const religion = document.getElementById('religion-select').value;
   const tech = document.getElementById('tech-select').value;
   const gov = document.getElementById('gov-select').value;
+  const query = document.getElementById('search-input').value.toLowerCase().trim(); // <-- add
 
-  // Get eligible countries (those that pass non-dropdown filters)
   const eligible = countries.filter(c => {
     const w = WIKI[c.tag];
     const hasWiki = w && w.found && (w.page_size || w.page_length || 0) > 500;
     const hasMissions = c.missions && c.missions.length > 0;
     const hasIdeas = c.ideas && c.ideas.ideas && c.ideas.ideas.length > 0;
-    if (!hasWiki && !hasMissions && !hasIdeas) return false;
-    return passesFilter(c);
+    if (!hasWiki && !hasMissions && !hasIdeas && !query) return false; // <-- allow search-only matches through, like applyFilters does
+    if (!passesFilter(c)) return false;
+    if (query) { // <-- add this whole block
+      const score = Math.max(
+        fuzzyScore(query, c.name),
+        fuzzyScore(query, c.tag),
+        fuzzyScore(query, c.primary_culture),
+        fuzzyScore(query, c.religion),
+        fuzzyScore(query, c.culture_group),
+        fuzzyScore(query, c.government),
+        fuzzyScore(query, c.technology_group),
+        fuzzyScore(query, c.adjective)
+      );
+      if (score === 0) return false;
+    }
+    return true;
   });
 
   // For each dropdown, compute valid options based on all OTHER active filters
