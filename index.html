@@ -1170,6 +1170,7 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 12px;
+  max-width: 517px;
 }
 .campaign-btn {
   padding: 3px 7px 4px;
@@ -5856,14 +5857,12 @@ function wmResetView() {
   if (!wrap) return;
   const cw = wrap.clientWidth, ch = wrap.clientHeight;
   if (wmLandBox) {
-    // Fill the frame height with the inhabited land strip, centered on the
-    // densest part of the world; the rest stays reachable by pan/zoom.
     const [x1, y1, x2, y2] = wmLandBox;
     const bh = (y2 - y1) * wmFitScale;
     wmScale = Math.max(1, ch / (bh * 1.02));
+    wmScale = Math.max(wmScale, wmMinScale());   // <-- add this line
     const fx = wmFocus ? wmFocus[0] : (x1 + x2) / 2;
     const fy = wmFocus ? wmFocus[1] : (y1 + y2) / 2;
-    // Clamp focus so the viewport stays within the land box where possible
     const viewW = cw / (wmScale * wmFitScale), viewH = ch / (wmScale * wmFitScale);
     const cxm = Math.max(x1 + viewW / 2, Math.min(x2 - viewW / 2, fx));
     const cym = Math.max(y1 + viewH / 2, Math.min(y2 - viewH / 2, fy));
@@ -5871,6 +5870,7 @@ function wmResetView() {
     wmOffY = ch / 2 - cym * wmFitScale * wmScale;
   } else {
     wmScale = Math.max(1, ch / (MAP_H * wmFitScale));
+    wmScale = Math.max(wmScale, wmMinScale());   // <-- add this line too
     wmOffX = (cw - MAP_W * wmFitScale * wmScale) / 2;
     wmOffY = (ch - MAP_H * wmFitScale * wmScale) / 2;
   }
