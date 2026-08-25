@@ -724,6 +724,7 @@ body {
 .pill.pill-region:hover { border-color: var(--green); background: rgba(74,186,106,0.1); }
 .pill.pill-PlayableIn1444 { border-color: var(--green); color: var(--green); background: rgba(74,186,106,0.1); }
 .pill.pill-Formable { border-color: var(--purple); color: var(--purple); background: rgba(155,114,207,0.1); }
+.pill.pill-eventspawned { border-color: var(--red); color: var(--red); background: rgba(224,82,82,0.1); }
 .pill.pill-UniqueMT { border-color: var(--gold-lighter); color: var(--gold-lighter); background: rgba(201,168,76,0.1); }
 .pill.pill-GenericMT { border-color: var(--text-darker); color: var(--text-darker); background: rgba(150,150,160,0.08); }
 
@@ -4373,6 +4374,7 @@ function selectCountry(tag) {
     const infoRows = [];
     if (s.status === 'playable' || s.status === 'both') infoRows.push(['Playable In 1444?', '<span class="pill pill-playable">Yes</span>']);
     if (s.status === 'formable' || s.status === 'both') infoRows.push(['Formable?', '<span class="pill pill-formable">Yes</span>']);
+    if (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) infoRows.push(['Event Spawned?', '<span class="pill pill-eventspawned">Yes</span>']);
     if (c.primary_culture) infoRows.push(['Primary Culture', esc(c.primary_culture)]);
     if (c.culture_group) infoRows.push(['Culture Group', esc(c.culture_group)]);
     if (c.accepted_cultures && c.accepted_cultures.length) infoRows.push(['Accepted Cultures', c.accepted_cultures.map(ac => esc(ac)).join(', ')]);
