@@ -438,20 +438,37 @@ body {
   border: 1px solid rgba(155,114,207,0.3);
   display: none;
 }
+
+
+/* --------------------------------------------------BADGES--------------------------------------------- */
 .country-item .badges {
   display: flex;
   gap: 3px;
   flex-shrink: 0;
-  display: none;
 }
 .badge-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
   display: inline-block;
+}
+.badge-dot.missions {
+  background: var(--blue);
+}
+.badge-dot.ideas {
+  background: var(--gold-lighter);
   display: none;
 }
-.badge-dot.missions { background: var(--blue); }
-.badge-dot.ideas { background: var(--gold-lighter); }
+
+
+
+
+
+
+
+
+
+
+
 .played-toggle {
   width: 18px; height: 18px;
   flex-shrink: 0;
