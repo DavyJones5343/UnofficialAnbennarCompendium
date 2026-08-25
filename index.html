@@ -288,10 +288,11 @@ body {
 }
 .filter-select:hover {
   border-color: var(--gold-darker);
+    background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7333' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
 }
 .filter-select:focus {
   border-color: var(--gold-lighter);
-  background: var(--bluegray-darker);
+    background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7333' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
 }
 .filter-select option {
   background: var(--bluegray-darker);
@@ -1828,7 +1829,7 @@ body {
       <select id="culture-select" class="filter-select"><option value="">Culture Group...</option></select>
       <select id="religion-select" class="filter-select"><option value="">Religion...</option></select>
       <select id="tech-select" class="filter-select"><option value="">Tech Group...</option></select>
-      <select id="gov-select" class="filter-select"><option value="">Government...</option></select>
+      <select id="gov-select" class="filter-select"><option value="">Government Type...</option></select>
     </div>
     <div id="filters">
       <button class="filter-btn" data-filter="PlayableIn1444">Playable In 1444</button>
