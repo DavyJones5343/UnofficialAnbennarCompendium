@@ -2365,7 +2365,7 @@ function renderCountryList() {
     </div>`;
   }).join('');
 
-  count.innerHTML = `${filteredCountries.length} countries <span id="played-count" style="color:var(--green)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played)' : ''}</span>`;
+  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--green)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played)' : ''}</span>`;
 
   list.querySelectorAll('.country-item').forEach(el => {
     el.addEventListener('click', () => selectCountry(el.dataset.tag));
@@ -5663,6 +5663,15 @@ function wmResetView() {
     wmScale = Math.max(1, ch / (MAP_H * wmFitScale));
     wmOffX = (cw - MAP_W * wmFitScale * wmScale) / 2;
     wmOffY = (ch - MAP_H * wmFitScale * wmScale) / 2;
+
+    // Safety net: guarantee the canvas fully covers the viewport, both
+    // horizontally and vertically, regardless of land-box math above.
+    const canvasW = MAP_W * wmFitScale * wmScale;
+    const canvasH = MAP_H * wmFitScale * wmScale;
+    if (wmOffY > 0) wmOffY = 0;
+    if (wmOffY + canvasH < ch) wmOffY = ch - canvasH;
+    if (wmOffX > 0) wmOffX = 0;
+    if (wmOffX + canvasW < cw) wmOffX = cw - canvasW;
   }
   wmApplyTransform();
 }
