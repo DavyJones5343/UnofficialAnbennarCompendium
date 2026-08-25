@@ -912,8 +912,20 @@ body {
 }
 .tab-btn .tab-star {
   font-size: 12px;
-  color: var(--gold-lighter);
+  color: var(--text-darker);
   margin-left: 6px;
+}
+.tab-btn:hover .tab-star {
+  color: var(--text-lighter);
+}
+.tab-btn.active .tab-star {
+  color: var(--text-lighter);
+}
+.tab-btn:hover .count {
+  color: var(--text-lighter);
+}
+.tab-btn.active .count {
+  color: var(--text-lighter);
 }
 
 
