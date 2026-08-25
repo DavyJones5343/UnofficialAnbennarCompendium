@@ -214,8 +214,9 @@ body {
 }
 #search-input:focus {
   border-color: var(--gold-lighter);
-  /* box-shadow: var(--ring-gold); */
-  /* background: rgba(0,0,0,0.5); */
+}
+#search-input.has-text {
+  border-color: var(--gold-lighter);
 }
 #search-input::placeholder {
   color: var(--text-darker);
@@ -2328,7 +2329,11 @@ function renderActiveFilters() {
 }
 
 function clearAllFilters() {
-  document.getElementById('search-input').value = '';
+  const searchInput = document.getElementById('search-input');
+  searchInput.value = '';
+  searchInput.classList.remove('has-text');
+
+  
   document.getElementById('region-select').value = '';
   document.getElementById('culture-select').value = '';
   document.getElementById('religion-select').value = '';
@@ -2400,7 +2405,22 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilters();
     });
   });
-  document.getElementById('search-input').addEventListener('input', applyFilters);
+
+
+
+  
+  // document.getElementById('search-input').addEventListener('input', applyFilters);
+
+  const searchInput = document.getElementById('search-input');
+
+  searchInput.addEventListener('input', () => {
+    searchInput.classList.toggle('has-text', searchInput.value.trim() !== '');
+    applyFilters();
+  });
+
+
+
+
   ['region-select','culture-select','religion-select','tech-select','gov-select'].forEach(id => {
     document.getElementById(id).addEventListener('change', applyFilters);
   });
@@ -5663,15 +5683,6 @@ function wmResetView() {
     wmScale = Math.max(1, ch / (MAP_H * wmFitScale));
     wmOffX = (cw - MAP_W * wmFitScale * wmScale) / 2;
     wmOffY = (ch - MAP_H * wmFitScale * wmScale) / 2;
-
-    // Safety net: guarantee the canvas fully covers the viewport, both
-    // horizontally and vertically, regardless of land-box math above.
-    const canvasW = MAP_W * wmFitScale * wmScale;
-    const canvasH = MAP_H * wmFitScale * wmScale;
-    if (wmOffY > 0) wmOffY = 0;
-    if (wmOffY + canvasH < ch) wmOffY = ch - canvasH;
-    if (wmOffX > 0) wmOffX = 0;
-    if (wmOffX + canvasW < cw) wmOffX = cw - canvasW;
   }
   wmApplyTransform();
 }
