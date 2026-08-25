@@ -2151,16 +2151,32 @@ function updateFilterDropdowns() {
   const repopulate = (id, values, currentVal) => {
     const sel = document.getElementById(id);
     const defaultText = sel.options[0].textContent;
+
     sel.innerHTML = '';
+
     const defOpt = document.createElement('option');
-    defOpt.value = ''; defOpt.textContent = defaultText;
+    defOpt.value = '';
+    defOpt.textContent = defaultText;
     sel.appendChild(defOpt);
+
     [...values].sort().forEach(v => {
       const opt = document.createElement('option');
-      opt.value = v; opt.textContent = titleCase(v);
+      opt.value = v;
+      opt.textContent = titleCase(v);
       sel.appendChild(opt);
     });
-    sel.value = values.has(currentVal) ? currentVal : '';
+
+    //sel.value = values.has(currentVal) ? currentVal : '';
+
+    const stillValid = values.has(currentVal);
+    sel.value = stillValid ? currentVal : '';
+
+    // Reset the selected-state styling if the option was invalidated
+    if (stillValid) {
+      sel.classList.add('has-selection');
+    } else {
+      sel.classList.remove('has-selection');
+    }
   };
 
   repopulate('culture-select', validCultures, culture);
@@ -2203,7 +2219,16 @@ function updateFilterDropdowns() {
     });
     rSel.appendChild(grp);
   });
-  rSel.value = validRegions.has(region) ? region : '';
+  //rSel.value = validRegions.has(region) ? region : '';
+  const regionStillValid = validRegions.has(region);
+
+  rSel.value = regionStillValid ? region : '';
+
+  if (regionStillValid) {
+    rSel.classList.add('has-selection');
+  } else {
+    rSel.classList.remove('has-selection');
+  }
 }
 
 function passesFilter(c) {
