@@ -619,21 +619,25 @@ body {
 }
 
 
-.back-to-map-always {
-  background: none;
-  color: var(--gold-lighter);
-  padding: 0px;
-  border: none;
+.back-map-always {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 50;
+  border: 1px solid var(--bluegray-darker);
+  background: var(--bluegray-darker);
+  padding: 5px 7px;
+  border-radius: 4px;
+  color: var(--text-darker);
   font-family: 'EB Garamond', serif;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
   cursor: pointer;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-  display: inline-block;
 }
-.back-to-map-always:hover {
+.back-map-always:hover {
   color: var(--text-lighter);
+  border-color: var(--gold-darker);
 }
 
 
@@ -4607,7 +4611,7 @@ function selectCountry(tag) {
   }
 
   detail.innerHTML = '<button class="back-to-map" onclick="showWorldMap()">UNOFFICIAL ANBENNAR COMPENDIUM</button>'
-  + '<button class="back-to-map-always" onclick="showWorldMap()">&larr; Back to Map</button>'
+  + '<button class="back-map-always" onclick="showWorldMap()">&#66327;</button>'
   + html;
 
   // Track whether connectors have been drawn for missions tab
