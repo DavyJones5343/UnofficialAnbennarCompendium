@@ -4461,28 +4461,28 @@ function selectCountry(tag) {
     // Country info table
     html += '<div class="lore-info-table">';
     const infoRows = [];
-    if (s.status === 'playable' || s.status === 'both') infoRows.push(['Playable In 1444?', '<span class="pill pill-playable">Yes</span>']);
-    if (s.status === 'formable' || s.status === 'both') infoRows.push(['Formable?', '<span class="pill pill-formable">Yes</span>']);
-    if (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) infoRows.push(['Event Spawned?', '<span class="pill pill-eventspawned">Yes</span>']);
+    infoRows.push(['Playable In 1444?', (s.status === 'playable' || s.status === 'both') ? '<span class="pill pill-playable">Yes</span>' : 'No']);
+    infoRows.push(['Formable?', (s.status === 'formable' || s.status === 'both') ? '<span class="pill pill-formable">Yes</span>' : 'No']);
+    infoRows.push(['Event Spawned?', (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) ? '<span class="pill pill-eventspawned">Yes</span>' : 'No']);
 
-    if (reg.superregion_name) infoRows.push(['Superregion', esc(reg.superregion_name)]);
-    if (reg.region_name) infoRows.push(['Region', esc(reg.region_name)]);
-    if (s.provinces_owned) infoRows.push(['Starting Provinces', s.provinces_owned]);
+    infoRows.push(['Superregion', reg.superregion_name ? esc(reg.superregion_name) : '']);
+    infoRows.push(['Region', reg.region_name ? esc(reg.region_name) : '']);
+    infoRows.push(['Starting Provinces', s.provinces_owned || '']);
 
-    if (c.culture_group) infoRows.push(['Culture Group', esc(c.culture_group)]);
-    if (c.primary_culture) infoRows.push(['Primary Culture', esc(c.primary_culture)]);
-    if (c.accepted_cultures && c.accepted_cultures.length) infoRows.push(['Accepted Cultures', c.accepted_cultures.map(ac => esc(ac)).join(', ')]);
+    infoRows.push(['Culture Group', c.culture_group ? esc(c.culture_group) : '']);
+    infoRows.push(['Primary Culture', c.primary_culture ? esc(c.primary_culture) : '']);
+    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '']);
 
-    if (c.religion) infoRows.push(['Religion', `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}`]);
+    infoRows.push(['Religion', c.religion ? `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}` : '']);
 
-    if (c.technology_group) infoRows.push(['Technology Group', esc(c.technology_group)]);
+    infoRows.push(['Technology Group', c.technology_group ? esc(c.technology_group) : '']);
 
-    if (c.government) infoRows.push(['Government Type', esc(titleCase(c.government))]);
-    if (c.government_rank) infoRows.push(['Government Rank', c.government_rank]);
-    if (c.government_reforms && c.government_reforms.length) infoRows.push(['Government Reforms', c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ')]);
+    infoRows.push(['Government Type', c.government ? esc(titleCase(c.government)) : '']);
+    infoRows.push(['Government Rank', c.government_rank || '']);
+    infoRows.push(['Government Reforms', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
 
-    if (c.historical_rivals && c.historical_rivals.length) infoRows.push(['Historical Rivals', c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
-    if (c.historical_friends && c.historical_friends.length) infoRows.push(['Historical Friends', c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
+    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '']);
+    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '']);
     
     html += '<table class="lore-table">';
     infoRows.forEach(([label, val]) => { html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`; });
