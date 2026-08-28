@@ -828,7 +828,9 @@ body {
   font-weight: 500;
   margin-left: 4px;
 }
-.lore-read-more:hover { color: var(--gold-lighter); }
+.lore-read-more:hover {
+  color: var(--gold-lighter);
+}
 .lore-table {
   width: 100%;
   border-collapse: collapse;
@@ -847,7 +849,10 @@ body {
   width: 160px;
   white-space: nowrap;
 }
-
+.lore-table tr.lore-spacer td {
+  padding: 8px 0;
+  border-bottom: none;
+}
 
 .lore-text-full {
   background: var(--parchment);
@@ -4465,27 +4470,39 @@ function selectCountry(tag) {
     infoRows.push(['Formable?', (s.status === 'formable' || s.status === 'both') ? '<span class="pill pill-formable">Yes</span>' : 'No']);
     infoRows.push(['Event Spawned?', (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) ? '<span class="pill pill-eventspawned">Yes</span>' : 'No']);
 
+    infoRows.push([null, null]);
+
     infoRows.push(['Superregion', reg.superregion_name ? esc(reg.superregion_name) : '']);
     infoRows.push(['Region', reg.region_name ? esc(reg.region_name) : '']);
-    infoRows.push(['Starting Provinces', s.provinces_owned || '']);
+    infoRows.push(['Starting Provinces', s.provinces_owned || '-']);
+
+    infoRows.push([null, null]);
 
     infoRows.push(['Culture Group', c.culture_group ? esc(c.culture_group) : '']);
     infoRows.push(['Primary Culture', c.primary_culture ? esc(c.primary_culture) : '']);
-    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '']);
+    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '-']);
+
+    infoRows.push([null, null]);
 
     infoRows.push(['Religion', c.religion ? `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}` : '']);
-
     infoRows.push(['Technology Group', c.technology_group ? esc(c.technology_group) : '']);
+
+    infoRows.push([null, null]);
 
     infoRows.push(['Government Type', c.government ? esc(titleCase(c.government)) : '']);
     infoRows.push(['Government Rank', c.government_rank || '']);
-    infoRows.push(['Government Reforms', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
+    infoRows.push(['Government Reform', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
 
-    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '']);
-    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '']);
+    infoRows.push([null, null]);
+
+    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '-']);
+    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '-']);
     
     html += '<table class="lore-table">';
-    infoRows.forEach(([label, val]) => { html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`; });
+    infoRows.forEach(([label, val]) => {
+      if (label === null) { html += `<tr class="lore-spacer"><td colspan="2">&nbsp;</td></tr>`; return; }
+      html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`;
+    });
     html += '</table></div>';
 
     // Lore text (startup lore from game, then wiki lore)
