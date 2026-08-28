@@ -196,9 +196,10 @@ body {
   padding: 5px 0px 5px 0px;
   /* border-bottom: 1px solid var(--bluegray-lighter); */
   flex-shrink: 0;
+  min-width: 0;
 }
 #search-input {
-  width: 270px;
+  width: 100%;
   padding: 10px 10px;
   background: var(--bluegray-darker);
   border: 1px solid var(--bluegray-lighter);
@@ -307,8 +308,7 @@ body {
   justify-content: flex-end;
   position: relative;
   user-select: none;
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
 }
 #active-filters:empty {
   display: none; /* REMOVES ACTIVE FILTERS */
@@ -1620,7 +1620,10 @@ body {
   .tab-nav { flex-wrap: wrap; gap: 0; }
   .tab-btn { font-size: 16px; padding: 8px 10px; }
   /* Info table: let labels wrap */
-  .lore-table .lore-label { white-space: normal; width: 120px; }
+  .lore-table .lore-label {
+    white-space: normal;
+    width: 150px;
+  }
   .lore-table td { padding: 5px 8px; font-size: 16px; }
   /* Mission grid: let it scroll horizontally with smaller nodes */
   /* Mission modal: full-width on mobile */
