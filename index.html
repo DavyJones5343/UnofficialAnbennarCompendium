@@ -2283,7 +2283,7 @@ function updateFilterDropdowns() {
   [...srMap.keys()].sort().forEach(sr => {
     const srOpt = document.createElement('option');
     srOpt.value = 'sr:' + sr;
-    srOpt.textContent = '\u25B8 ' + sr + ' (all)';
+    srOpt.textContent = sr + ' Superregion';
     srOpt.style.fontWeight = 'bold';
     rSel.appendChild(srOpt);
     srMap.get(sr).sort().forEach(rn => {
