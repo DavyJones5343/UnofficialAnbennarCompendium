@@ -1194,8 +1194,12 @@ body {
   color: var(--text-lighter);
 }
 
-.filter-btn:disabled,
-.filter-btn.disabled {
+.filter-btn:disabled, .filter-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.filter-select:disabled, .filter-select.disabled {
   opacity: 0.35;
   cursor: not-allowed;
   pointer-events: none;
@@ -2157,6 +2161,14 @@ function matchesRegionFilter(c, regionVal) {
   return reg.superregion_name === regionVal || reg.region_name === regionVal;
 }
 
+function updateSelectDisabledState(id) {
+  const sel = document.getElementById(id);
+  const isEmpty = sel.options.length <= 1; // only the "Region..."/"Culture Group..." placeholder remains
+  sel.disabled = isEmpty;
+  sel.classList.toggle('disabled', isEmpty);
+  sel.title = isEmpty ? 'No nations match this combination of filters' : '';
+}
+
 function updateFilterDropdowns() {
   const region = document.getElementById('region-select').value;
   const culture = document.getElementById('culture-select').value;
@@ -2292,6 +2304,8 @@ function updateFilterDropdowns() {
   } else {
     rSel.classList.remove('has-selection');
   }
+
+  ['region-select', 'culture-select', 'religion-select', 'tech-select', 'gov-select'].forEach(updateSelectDisabledState);
 }
 
 function passesFilter(c, filters) {
