@@ -4464,19 +4464,26 @@ function selectCountry(tag) {
     if (s.status === 'playable' || s.status === 'both') infoRows.push(['Playable In 1444?', '<span class="pill pill-playable">Yes</span>']);
     if (s.status === 'formable' || s.status === 'both') infoRows.push(['Formable?', '<span class="pill pill-formable">Yes</span>']);
     if (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) infoRows.push(['Event Spawned?', '<span class="pill pill-eventspawned">Yes</span>']);
-    if (c.primary_culture) infoRows.push(['Primary Culture', esc(c.primary_culture)]);
-    if (c.culture_group) infoRows.push(['Culture Group', esc(c.culture_group)]);
-    if (c.accepted_cultures && c.accepted_cultures.length) infoRows.push(['Accepted Cultures', c.accepted_cultures.map(ac => esc(ac)).join(', ')]);
-    if (c.religion) infoRows.push(['Religion', `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}`]);
-    if (c.government) infoRows.push(['Government', esc(titleCase(c.government))]);
-    if (c.government_rank) infoRows.push(['Government Rank', c.government_rank]);
-    if (c.government_reforms && c.government_reforms.length) infoRows.push(['Reforms', c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ')]);
-    if (c.technology_group) infoRows.push(['Technology Group', esc(c.technology_group)]);
-    if (reg.region_name) infoRows.push(['Region', esc(reg.region_name)]);
+
     if (reg.superregion_name) infoRows.push(['Superregion', esc(reg.superregion_name)]);
+    if (reg.region_name) infoRows.push(['Region', esc(reg.region_name)]);
     if (s.provinces_owned) infoRows.push(['Starting Provinces', s.provinces_owned]);
+
+    if (c.culture_group) infoRows.push(['Culture Group', esc(c.culture_group)]);
+    if (c.primary_culture) infoRows.push(['Primary Culture', esc(c.primary_culture)]);
+    if (c.accepted_cultures && c.accepted_cultures.length) infoRows.push(['Accepted Cultures', c.accepted_cultures.map(ac => esc(ac)).join(', ')]);
+
+    if (c.religion) infoRows.push(['Religion', `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}`]);
+
+    if (c.technology_group) infoRows.push(['Technology Group', esc(c.technology_group)]);
+
+    if (c.government) infoRows.push(['Government Type', esc(titleCase(c.government))]);
+    if (c.government_rank) infoRows.push(['Government Rank', c.government_rank]);
+    if (c.government_reforms && c.government_reforms.length) infoRows.push(['Government Reforms', c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ')]);
+
     if (c.historical_rivals && c.historical_rivals.length) infoRows.push(['Historical Rivals', c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
     if (c.historical_friends && c.historical_friends.length) infoRows.push(['Historical Friends', c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
+    
     html += '<table class="lore-table">';
     infoRows.forEach(([label, val]) => { html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`; });
     html += '</table></div>';
