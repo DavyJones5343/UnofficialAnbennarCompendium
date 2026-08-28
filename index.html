@@ -533,7 +533,6 @@ body {
   padding: 0px 0px 0px;
   color: var(--text-darker);
   margin: 0 auto;
-  animation: detailIn 0.4s var(--ease);
   /* max-width: 1000px; */
 }
 .welcome-rule {
@@ -621,12 +620,12 @@ body {
 
 .back-map-always {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  top: 10px;
+  right: 20px;
   z-index: 50;
   border: 1px solid var(--bluegray-darker);
   background: var(--bluegray-darker);
-  padding: 3px 7px;
+  padding: 0px;
   border-radius: 4px;
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
@@ -634,6 +633,8 @@ body {
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
+  height: 40px;
+  width: 40px;
 }
 .back-map-always:hover {
   color: var(--text-lighter);
@@ -1553,7 +1554,6 @@ body {
 /* RESPONSIVE MOBILE MOBILE-------------------------------------------------------------------------------------------------------------------*/
 @media (max-width: 768px) {
 
-  /* AI MIGHT BE BAD DAVYJONES */
   .tab-content.active[data-tab="ideas"] > .idea-card {
     flex-basis: 100%;
   }
@@ -1599,6 +1599,9 @@ body {
   }
   .back-to-map {
     display: block !important;
+  }
+  .back-map-always {
+    display: none !important;
   }
   .filter-btn {
     padding: 3px 6px 4px 6px !important;
@@ -1957,7 +1960,6 @@ body {
 // --- DATA ---
 let DATA = {}, RELIGIONS = {}, WIKI = {}, REGIONS = {}, TRIGGERS = {}, STATUS = {}, ICON_MAP = {}, PROVINCES = {}, MODIFIERS = {}, STARTUP_LORE = {}, PROVINCE_OWNERS = {}, DIPLOMACY = {}, PROV_DETAILS = {}, AREA_DATA = {}, EVENT_NAMES = {}, GREAT_PROJECTS = {}, SCRIPTED = {}, NAMES = {};
 
-// ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 let MISSION_LOC_TEXT = '';
 
 // Map state
@@ -5910,7 +5912,7 @@ function clampWorldMapOffset() {
 function wmApplyTransform() {
   const canvas = document.getElementById('world-map-canvas');
   if (!canvas) return;
-  clampWorldMapOffset(); // NEW CLAMP WORLD MAP XXXX
+  clampWorldMapOffset(); // NEW CLAMP WORLD MAP
   canvas.style.transformOrigin = '0 0';
   canvas.style.transform = 'translate(' + wmOffX + 'px, ' + wmOffY + 'px) scale(' + wmScale + ')';
 }
