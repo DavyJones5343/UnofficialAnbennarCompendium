@@ -612,10 +612,30 @@ body {
   letter-spacing: 1px;
   margin-left: auto;
   margin-right: auto;
+  display: none;
 }
 .back-to-map:hover {
   color: var(--text-lighter);
 }
+
+
+.back-to-map-always {
+  background: none;
+  color: var(--gold-lighter);
+  padding: 0px;
+  border: none;
+  font-family: 'EB Garamond', serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+.back-to-map-always:hover {
+  color: var(--text-lighter);
+}
+
 
 /* COUNTRY DETAIL */
 #detail { display: none; }
@@ -4586,7 +4606,9 @@ function selectCountry(tag) {
     html += '</div>';
   }
 
-  detail.innerHTML = '<button class="back-to-map" onclick="showWorldMap()">UNOFFICIAL ANBENNAR COMPENDIUM</button>' + html;
+  detail.innerHTML = '<button class="back-to-map" onclick="showWorldMap()">UNOFFICIAL ANBENNAR COMPENDIUM</button>'
+  + '<button class="back-to-map-always" onclick="showWorldMap()">&larr; Back to Map</button>'
+  + html;
 
   // Track whether connectors have been drawn for missions tab
   let _connectorsDrawn = false;
