@@ -837,8 +837,8 @@ body {
   margin-bottom: 16px;
 }
 .lore-table td {
-  padding: 4px 0px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 2px 0px;
+  /* border-bottom: 1px solid rgba(255,255,255,0.06); */
   font-size: 16px;
   font-weight: 500;
   vertical-align: top;
@@ -846,11 +846,11 @@ body {
 .lore-table .lore-label {
   color: var(--gold-lighter);
   font-weight: 500;
-  width: 160px;
+  width: 150px;
   white-space: nowrap;
 }
 .lore-table tr.lore-spacer td {
-  padding: 8px 0;
+  padding: 0px;
   border-bottom: none;
 }
 
@@ -4474,13 +4474,13 @@ function selectCountry(tag) {
 
     infoRows.push(['Superregion', reg.superregion_name ? esc(reg.superregion_name) : '']);
     infoRows.push(['Region', reg.region_name ? esc(reg.region_name) : '']);
-    infoRows.push(['Starting Provinces', s.provinces_owned || '-']);
+    infoRows.push(['Starting Provinces', s.provinces_owned || '—']);
 
     infoRows.push([null, null]);
 
     infoRows.push(['Culture Group', c.culture_group ? esc(c.culture_group) : '']);
     infoRows.push(['Primary Culture', c.primary_culture ? esc(c.primary_culture) : '']);
-    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '-']);
+    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '—']);
 
     infoRows.push([null, null]);
 
@@ -4490,13 +4490,14 @@ function selectCountry(tag) {
     infoRows.push([null, null]);
 
     infoRows.push(['Government Type', c.government ? esc(titleCase(c.government)) : '']);
-    infoRows.push(['Government Rank', c.government_rank || '']);
-    infoRows.push(['Government Reform', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
+    const GOV_RANK_NAMES = { 1: 'Duchy', 2: 'Kingdom', 3: 'Empire' };
+    infoRows.push(['Government Rank', c.government_rank ? `${GOV_RANK_NAMES[c.government_rank] || 'Rank ' + c.government_rank} (${c.government_rank})` : '']);
+    infoRows.push(['Starting Reform', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
 
     infoRows.push([null, null]);
 
-    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '-']);
-    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '-']);
+    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '—']);
+    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '—']);
     
     html += '<table class="lore-table">';
     infoRows.forEach(([label, val]) => {
