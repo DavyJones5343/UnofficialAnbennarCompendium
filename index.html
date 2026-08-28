@@ -2134,17 +2134,16 @@ function populateRegions() {
     }
   }
   [...srs.keys()].sort().forEach(sr => {
-    const grp = document.createElement('optgroup');
-    grp.label = sr;
     const srOpt = document.createElement('option');
-    srOpt.value = 'sr:' + sr; srOpt.textContent = '\u25B8 ' + sr + ' (all)';
-    grp.appendChild(srOpt);
+    srOpt.value = 'sr:' + sr;
+    srOpt.textContent = '\u25B8 ' + sr + ' (all)';
+    srOpt.style.fontWeight = 'bold';
+    sel.appendChild(srOpt);
     [...srs.get(sr)].sort().forEach(rn => {
       const opt = document.createElement('option');
       opt.value = 'rg:' + rn; opt.textContent = rn;
-      grp.appendChild(opt);
+      sel.appendChild(opt);
     });
-    sel.appendChild(grp);
   });
 }
 
@@ -2282,17 +2281,16 @@ function updateFilterDropdowns() {
     }
   });
   [...srMap.keys()].sort().forEach(sr => {
-    const grp = document.createElement('optgroup');
-    grp.label = sr;
     const srOpt = document.createElement('option');
-    srOpt.value = 'sr:' + sr; srOpt.textContent = '\u25B8 ' + sr + ' (all)';
-    grp.appendChild(srOpt);
+    srOpt.value = 'sr:' + sr;
+    srOpt.textContent = '\u25B8 ' + sr + ' (all)';
+    srOpt.style.fontWeight = 'bold';
+    rSel.appendChild(srOpt);
     srMap.get(sr).sort().forEach(rn => {
       const opt = document.createElement('option');
       opt.value = 'rg:' + rn; opt.textContent = rn;
-      grp.appendChild(opt);
+      rSel.appendChild(opt);
     });
-    rSel.appendChild(grp);
   });
   rSel.value = validRegions.has(region) ? region : '';
   const regionStillValid = validRegions.has(region);
