@@ -195,7 +195,7 @@ body {
 #search-box {
   padding: 5px 0px 5px 0px;
   /* border-bottom: 1px solid var(--bluegray-lighter); */
-  flex-shrink: 0;
+  flex: 1;
   min-width: 0;
 }
 #search-input {
@@ -359,6 +359,14 @@ body {
   color: var(--text-lighter);
   border: 1px solid var(--gold-darker);
 }
+
+.clear-all-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
 .sidebyside {
   display: flex;
   align-items: center;
@@ -2513,14 +2521,10 @@ function renderActiveFilters() {
     chips.push({ label: titleCase(f), clear: () => { activeFilters.delete(f); document.querySelector(`.filter-btn[data-filter="${f}"]`).classList.remove('active'); } });
   });
 
-  if (chips.length === 0) {
-    container.innerHTML = chips.map((ch, i) =>
-    `<span class="active-chip">${esc(ch.label)} <span class="chip-x" data-idx="${i}">&times;</span></span>`).join('') + '<span class="clear-all-btn">&#8634;</span>';
-  }
-
+  const isEmpty = chips.length === 0;
   container.innerHTML = chips.map((ch, i) =>
     `<span class="active-chip">${esc(ch.label)} <span class="chip-x" data-idx="${i}">&times;</span></span>`
-  ).join('') + '<span class="clear-all-btn">&#8634;</span>';
+  ).join('') + `<button class="clear-all-btn" type="button"${isEmpty ? ' disabled' : ''} aria-label="Clear all filters">&#8634;</button>`;
 
   container.querySelectorAll('.chip-x').forEach(x => {
     x.addEventListener('click', () => { chips[parseInt(x.dataset.idx)].clear(); applyFilters(); });
