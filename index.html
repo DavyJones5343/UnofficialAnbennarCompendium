@@ -2136,7 +2136,7 @@ function populateRegions() {
   [...srs.keys()].sort().forEach(sr => {
     const srOpt = document.createElement('option');
     srOpt.value = 'sr:' + sr;
-    srOpt.textContent = '\u25B8 ' + sr + ' (all)';
+    srOpt.textContent = sr + ' Superregion';
     srOpt.style.fontWeight = 'bold';
     sel.appendChild(srOpt);
     [...srs.get(sr)].sort().forEach(rn => {
