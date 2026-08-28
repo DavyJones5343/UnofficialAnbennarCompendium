@@ -195,6 +195,7 @@ body {
 #search-box {
   padding: 5px 0px 5px 0px;
   /* border-bottom: 1px solid var(--bluegray-lighter); */
+  flex-shrink: 0;
 }
 #search-input {
   width: 270px;
@@ -306,6 +307,8 @@ body {
   justify-content: flex-end;
   position: relative;
   user-select: none;
+  flex: 1;
+  min-width: 0;
 }
 #active-filters:empty {
   display: none; /* REMOVES ACTIVE FILTERS */
@@ -2167,6 +2170,7 @@ function populateRegions() {
     srOpt.value = 'sr:' + sr;
     srOpt.textContent = sr + ' Superregion';
     srOpt.style.fontWeight = 'bold';
+    srOpt.style.color = 'var(--text-lighter)';
     sel.appendChild(srOpt);
     [...srs.get(sr)].sort().forEach(rn => {
       const opt = document.createElement('option');
@@ -2314,6 +2318,7 @@ function updateFilterDropdowns() {
     srOpt.value = 'sr:' + sr;
     srOpt.textContent = sr + ' Superregion';
     srOpt.style.fontWeight = 'bold';
+    srOpt.style.color = 'var(--text-lighter)';
     rSel.appendChild(srOpt);
     srMap.get(sr).sort().forEach(rn => {
       const opt = document.createElement('option');
