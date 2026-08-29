@@ -2575,12 +2575,13 @@ function renderCountryList() {
 
     const isPlayed = PLAYED.has(c.tag);
     return `<div class="country-item${selectedTag === c.tag ? ' selected' : ''}${isPlayed ? ' is-played' : ''}" data-tag="${c.tag}">
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span>
+      
       <img class="flag" src="flags/${c.tag}.png" onerror="this.style.display='none'" loading="lazy">
       <span class="name">${esc(c.name)}</span>
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span>
     </div>`;
   }).join('');
 
