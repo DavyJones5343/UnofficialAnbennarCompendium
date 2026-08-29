@@ -1149,7 +1149,7 @@ body {
 .mission-connectors path {
   fill: none;
   stroke: var(--gold-darker);
-  stroke-width: 5;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -4852,8 +4852,9 @@ function drawMissionConnectors(container) {
         // Different column: smooth S-curve via cubic bezier.
         // Control points pull the curve vertically out of each node before
         // bending sideways, producing the rounded look instead of a hard elbow.
-        const midY = srcY + (tgtY - srcY) * 0.5;
-        d = `M${srcX},${srcY} C${srcX},${midY} ${tgtX},${midY} ${tgtX},${tgtY}`;
+        const c1Y = srcY + (tgtY - srcY) * 0.7;
+        const c2Y = srcY + (tgtY - srcY) * 0.3;
+        d = `M${srcX},${srcY} C${srcX},${c1Y} ${tgtX},${c2Y} ${tgtX},${tgtY}`;
       }
 
       path.setAttribute('d', d);
