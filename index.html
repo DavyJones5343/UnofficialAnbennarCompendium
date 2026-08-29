@@ -673,8 +673,8 @@ body {
   margin-top: 14px;
 }
 .detail-header img.flag {
-  width: 120px;
-  height: 120px;
+  width: 118px;
+  height: 118px;
   image-rendering: auto;
   flex-shrink: 0;
   box-shadow: 0 0px 10px var(--parchment);
@@ -1502,12 +1502,12 @@ body {
 
 
 .detail-header .info h2 a {
-  color: inherit;
-  text-decoration: none;
+  /* color: inherit; */
+  /* text-decoration: none; */
 }
 .detail-header .info h2 a:hover {
-  color: var(--text-lighter);
-  text-decoration: none;
+  /* color: var(--text-lighter); */
+  /* text-decoration: none; */
 }
 
 
@@ -1743,6 +1743,11 @@ body {
   color: var(--text-lighter);
   border: 1px solid var(--gold-darker);
 }
+.map-ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 
 #mobile-toggle {
@@ -1960,8 +1965,8 @@ body {
       </div>
       <div class="map-controls">
         <button id="mobile-toggle">&#9776;</button>
-        <button class="map-ctrl-btn" onclick="wmZoom(1)">+</button>
-        <button class="map-ctrl-btn" onclick="wmZoom(-1)">&minus;</button>
+        <button class="map-ctrl-btn" id="wm-zoom-in" onclick="wmZoom(1)">+</button>
+        <button class="map-ctrl-btn" id="wm-zoom-out" onclick="wmZoom(-1)">&minus;</button>
         <button class="map-ctrl-btn" onclick="wmResetView()">&#8853;</button>
       </div>
       <div id="world-map-status"></div>
@@ -4437,14 +4442,7 @@ function selectCountry(tag) {
   </a>
   <div class="info">
 
-
-      <!-- <h2>${esc(c.name)}</h2> -->
-
-      <h2>
-       <a href="${esc(wikiLink)}" target="_blank" rel="noopener">
-          ${esc(c.name)}
-        </a>
-      </h2>
+      <h2>${esc(c.name)}</h2>
 
       <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''}</div>
       <div class="pills">
@@ -5933,6 +5931,16 @@ function wmApplyTransform() {
   clampWorldMapOffset(); // NEW CLAMP WORLD MAP
   canvas.style.transformOrigin = '0 0';
   canvas.style.transform = 'translate(' + wmOffX + 'px, ' + wmOffY + 'px) scale(' + wmScale + ')';
+  wmUpdateZoomButtons();
+}
+
+function wmUpdateZoomButtons() {
+  const inBtn = document.getElementById('wm-zoom-in');
+  const outBtn = document.getElementById('wm-zoom-out');
+  if (!inBtn || !outBtn) return;
+  const eps = 0.01;
+  inBtn.disabled = wmScale >= 20 - eps;
+  outBtn.disabled = wmScale <= wmMinScale() + eps;
 }
 
 function wmMinScale() {
