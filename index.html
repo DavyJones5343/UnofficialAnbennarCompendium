@@ -1744,7 +1744,7 @@ body {
   border: 1px solid var(--gold-darker);
 }
 .map-ctrl-btn:disabled {
-  opacity: 0.35;
+  opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -2661,6 +2661,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('religion-overlay').addEventListener('click', closeReligionPanel);
   document.getElementById('mission-modal-overlay').addEventListener('click', closeMissionModal);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.add('mobile-open');
+  }
 });
 
 function provName(id) {
@@ -4836,16 +4842,18 @@ function drawMissionConnectors(container) {
 
       if (tgtY <= srcY) return;
 
-      const path = document.createElementNS(svgNS, 'path');
+     const path = document.createElementNS(svgNS, 'path');
       let d;
 
       if (Math.abs(srcX - tgtX) < 5) {
+        // Same column: keep it a straight vertical line
         d = `M${srcX},${srcY} L${tgtX},${tgtY}`;
       } else {
-        // Route horizontal segment just below source node (in the gap between rows)
-        // to avoid crossing through other nodes' text
-        const horizY = srcY + 8;
-        d = `M${srcX},${srcY} L${srcX},${horizY} L${tgtX},${horizY} L${tgtX},${tgtY}`;
+        // Different column: smooth S-curve via cubic bezier.
+        // Control points pull the curve vertically out of each node before
+        // bending sideways, producing the rounded look instead of a hard elbow.
+        const midY = srcY + (tgtY - srcY) * 0.5;
+        d = `M${srcX},${srcY} C${srcX},${midY} ${tgtX},${midY} ${tgtX},${tgtY}`;
       }
 
       path.setAttribute('d', d);
