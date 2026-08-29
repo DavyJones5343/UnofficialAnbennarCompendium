@@ -673,8 +673,8 @@ body {
   margin-top: 14px;
 }
 .detail-header img.flag {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   image-rendering: auto;
   flex-shrink: 0;
   box-shadow: 0 0px 10px var(--parchment);
@@ -691,7 +691,7 @@ body {
   color: var(--text-darker);
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 }
 
 /* MISSION DESCRIPTION */
@@ -789,32 +789,26 @@ body {
   display: none;
 }
 
+/* -------------------------------------------------WIKI BUTTON-----------------------------------------*/
 .wiki-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   padding: 5px 10px;
-  /* background: linear-gradient(135deg, #2a2518, #1e1a14); */
-  border: 1px solid var(--gold-darker);
   border-radius: 4px;
-  color: var(--gold-darker);
-  font-family: 'EB Garamond', serif;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-lighter);
+  border-radius: 5px;
   font-size: 16px;
   font-weight: 500;
+  color: var(--text-darker);
   text-decoration: none;
-  margin-top: 10px;
-  transition: all 0.2s;
 }
 .wiki-btn:hover {
-  background: var(--bluegray-darker);
-  border-color: var(--gold-lighter);
-  /* transform: translateY(-1px); */ 
-  /* box-shadow: 0 4px 12px rgba(0,0,0,0.35); */
-
-
-
-  
+  border-color: var(--gold-darker);
+  color: var(--text-lighter);
 }
+
+
+
+
 .played-btn {
   display: inline-flex;
   align-items: center;
@@ -1265,7 +1259,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--bluegray-darker);
+  background: var(--parchment);
   border: 2px solid var(--gold-darker);
   border-radius: 4px;
   padding: 10px;
@@ -1342,7 +1336,6 @@ body {
 
 /* --------------------MISSION TEXT REQUIREMENTS-------------------- */
 .requirements-box {
-  background: var(--bluegray-darker);
   border-radius: 0 4px 4px 0;
   margin: 8px 0;
   font-size: 16px;
@@ -1675,8 +1668,12 @@ body {
   font-family: 'EB Garamond', serif;
 }
 
-/* Toggle for raw script view */
+/* Toggle for raw script view: Reveal Raw Code */
 .toggle-raw {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-darker);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
@@ -1686,8 +1683,14 @@ body {
   display: inline-block;
 }
 .toggle-raw:hover {
+  border-color: var(--gold-darker);
   color: var(--text-lighter);
 }
+
+
+
+
+
 
 
 /* Map */
