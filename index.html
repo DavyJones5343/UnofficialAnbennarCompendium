@@ -258,6 +258,58 @@ body {
   /* box-shadow: 0 2px 8px rgba(201,168,76,0.25); */
 }
 
+
+
+
+
+
+.filter-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.filter-select-wrap .filter-select {
+  flex: 1;
+  min-width: 0;
+}
+.select-clear-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--bluegray-darker);
+  background: var(--bluegray-darker);
+  border-radius: 5px;
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.select-clear-btn:hover {
+  color: var(--text-lighter);
+  border-color: var(--gold-darker);
+}
+/* Only show the × once that select actually has a value selected */
+.filter-select.has-selection + .select-clear-btn {
+  display: flex;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #region-filter {
   padding: 0px 0px 0px 0px;
   border-bottom: 1px solid var(--bluegray-lighter);
@@ -1922,11 +1974,26 @@ body {
     </div>
 
     <div id="region-filter">
-      <select id="region-select" class="filter-select"><option value="">Region...</option></select>
-      <select id="culture-select" class="filter-select"><option value="">Culture Group...</option></select>
-      <select id="religion-select" class="filter-select"><option value="">Religion...</option></select>
-      <select id="tech-select" class="filter-select"><option value="">Tech Group...</option></select>
-      <select id="gov-select" class="filter-select"><option value="">Government Type...</option></select>
+      <div class="filter-select-wrap">
+        <select id="region-select" class="filter-select"><option value="">Region...</option></select>
+        <button type="button" class="select-clear-btn" data-target="region-select" aria-label="Clear region filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="culture-select" class="filter-select"><option value="">Culture Group...</option></select>
+        <button type="button" class="select-clear-btn" data-target="culture-select" aria-label="Clear culture filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="religion-select" class="filter-select"><option value="">Religion...</option></select>
+        <button type="button" class="select-clear-btn" data-target="religion-select" aria-label="Clear religion filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="tech-select" class="filter-select"><option value="">Tech Group...</option></select>
+        <button type="button" class="select-clear-btn" data-target="tech-select" aria-label="Clear tech filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="gov-select" class="filter-select"><option value="">Government Type...</option></select>
+        <button type="button" class="select-clear-btn" data-target="gov-select" aria-label="Clear government filter">&times;</button>
+      </div>
     </div>
     <div id="filters">
       <button class="filter-btn" data-filter="PlayableIn1444">Playable In 1444</button>
@@ -2644,7 +2711,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-
+  // ADD THIS:
+  document.querySelectorAll('.select-clear-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const select = document.getElementById(btn.dataset.target);
+      select.value = '';
+      select.classList.remove('has-selection');
+      applyFilters();
+    });
+  });
 
   document.getElementById('mobile-toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('mobile-open');
