@@ -2053,7 +2053,7 @@ function togglePlayed(tag, e) {
 }
 function updatePlayedCount() {
   const el = document.getElementById('played-count');
-  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} played)` : '';
+  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} total played)` : '';
 }
 function togglePlayedDetail(tag, btn) {
   if (PLAYED.has(tag)) { PLAYED.delete(tag); btn.classList.remove('active'); btn.innerHTML = 'Mark as Played'; }
