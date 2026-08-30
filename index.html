@@ -563,8 +563,8 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 12px;
-  border-radius: 20px;
+  padding: 3px 7px 4px;
+  border-radius: 5px;
   border: 1px solid var(--bluegray-lighter);
   background: var(--bluegray-darker);
   color: var(--text-darker);
@@ -574,16 +574,14 @@ body {
   cursor: pointer;
   white-space: nowrap;
   vertical-align: middle;
-  transition: all 0.18s var(--ease);
 }
 .played-pill:hover {
   border-color: var(--gold-darker);
   color: var(--text-lighter);
 }
 .played-pill.active {
-  border-color: rgba(74,186,106,0.4);
-  background: rgba(74,186,106,0.1);
-  color: var(--green);
+  border-color: var(--gold-lighter);
+  color: var(--text-lighter);
 }
 
 
@@ -2089,8 +2087,8 @@ function updatePlayedCount() {
   if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} total played)` : '';
 }
 function togglePlayedDetail(tag, btn) {
-  if (PLAYED.has(tag)) { PLAYED.delete(tag); btn.classList.remove('active'); btn.innerHTML = 'Mark as Played'; }
-  else { PLAYED.add(tag); btn.classList.add('active'); btn.innerHTML = '&#10003; Played'; }
+  if (PLAYED.has(tag)) { PLAYED.delete(tag); btn.classList.remove('active'); btn.innerHTML = 'Played?'; }
+  else { PLAYED.add(tag); btn.classList.add('active'); btn.innerHTML = 'Played Nation'; }
   savePlayed();
   renderCountryList();
   updatePlayedCount();
@@ -2101,11 +2099,11 @@ function togglePlayedInline(tag, el, e) {
   if (PLAYED.has(tag)) {
     PLAYED.delete(tag);
     el.classList.remove('active');
-    el.innerHTML = 'Mark as Played';
+    el.innerHTML = 'Played?';
   } else {
     PLAYED.add(tag);
     el.classList.add('active');
-    el.innerHTML = '&#10003; Played';
+    el.innerHTML = 'Played Nation';
   }
   savePlayed();
   renderCountryList();
@@ -2684,7 +2682,7 @@ function renderCountryList() {
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Played?'}">&#10003;</span>
     </div>`;
   }).join('');
 
@@ -4552,7 +4550,7 @@ function selectCountry(tag) {
 
       <h2>${esc(c.name)}</h2>
 
-      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''} <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)">${PLAYED.has(tag) ? '&#10003; Played' : 'Mark as Played'}</span></div>
+      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''}</div>
       <div class="pills">
         ${statusHtml}
         <span class="pill pill-gov clickable" onclick="setGovernmentFilter('${esc(c.government || '')}')">${esc(titleCase(c.government) || 'Unknown')}</span>
@@ -4567,8 +4565,9 @@ function selectCountry(tag) {
         ${reg.region_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('rg:${esc(reg.region_name)}')">${esc(reg.region_name)}</span>` : ''}
         ${reg.superregion_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('sr:${esc(reg.superregion_name)}')">${esc(reg.superregion_name)}</span>` : ''}
       </div>
+      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)">${PLAYED.has(tag) ? '&#10003; Played' : 'Mark as Played'}</span>
       ${w.found ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>` : ''}
-      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)">${PLAYED.has(tag) ? '&#10003; Played' : 'Mark as Played'}</span>
+      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)">${PLAYED.has(tag) ? 'Nation Played' : 'Played?'}</span>
     </div>
   </div>`;
 
