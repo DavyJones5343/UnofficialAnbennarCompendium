@@ -542,7 +542,7 @@ body {
   border-color: var(--gold-darker);
 }
 .played-toggle.played {
-  color: var(--green);
+  color: var(--text-darker);
 }
 .country-item.is-played .name {
   /* color: var(--text-darker); */
@@ -2639,7 +2639,7 @@ function renderCountryList() {
     </div>`;
   }).join('');
 
-  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--green)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played)' : ''}</span>`;
+  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--text-darker)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' total played)' : ''}</span>`;
 
   list.querySelectorAll('.country-item').forEach(el => {
     el.addEventListener('click', () => selectCountry(el.dataset.tag));
