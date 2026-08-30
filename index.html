@@ -258,11 +258,7 @@ body {
   /* box-shadow: 0 2px 8px rgba(201,168,76,0.25); */
 }
 
-
-
-
-
-
+/* -------------------------------------------Dropdown Filter Cancel----------------------------------------*/
 .filter-select-wrap {
   display: flex;
   align-items: center;
@@ -273,39 +269,32 @@ body {
   min-width: 0;
 }
 .select-clear-btn {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
+  width: 31px;
+  height: 31px;
   border: 1px solid var(--bluegray-darker);
   background: var(--bluegray-darker);
   border-radius: 5px;
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
-  font-size: 16px;
+  font-size: 30px;
   line-height: 1;
   cursor: pointer;
+  padding: 0px 0px 4px 0px;
 }
 .select-clear-btn:hover {
   color: var(--text-lighter);
   border-color: var(--gold-darker);
 }
-/* Only show the × once that select actually has a value selected */
-.filter-select.has-selection + .select-clear-btn {
-  display: flex;
+/* Grayed out / inert when the paired select has no value selected */
+.filter-select:not(.has-selection) + .select-clear-btn {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -395,7 +384,7 @@ body {
   margin-left: auto;
   border: 1px solid var(--bluegray-darker);
   background: var(--bluegray-darker);
-  padding: 5px 7px;
+  padding: 5px 7px 4px 7px;
   border-radius: 5px;
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
@@ -422,7 +411,7 @@ body {
 .sidebyside {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 
