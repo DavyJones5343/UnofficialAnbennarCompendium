@@ -537,6 +537,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: transparent;
+  vertical-align: middle;
 }
 .played-toggle:hover {
   border-color: var(--gold-darker);
@@ -2058,6 +2059,22 @@ function updatePlayedCount() {
 function togglePlayedDetail(tag, btn) {
   if (PLAYED.has(tag)) { PLAYED.delete(tag); btn.classList.remove('active'); btn.innerHTML = 'Mark as Played'; }
   else { PLAYED.add(tag); btn.classList.add('active'); btn.innerHTML = '&#10003; Played'; }
+  savePlayed();
+  renderCountryList();
+  updatePlayedCount();
+}
+
+function togglePlayedInline(tag, el, e) {
+  if (e) e.stopPropagation();
+  if (PLAYED.has(tag)) {
+    PLAYED.delete(tag);
+    el.classList.remove('played');
+    el.title = 'Mark as played';
+  } else {
+    PLAYED.add(tag);
+    el.classList.add('played');
+    el.title = 'Mark as unplayed';
+  }
   savePlayed();
   renderCountryList();
   updatePlayedCount();
@@ -4503,7 +4520,7 @@ function selectCountry(tag) {
 
       <h2>${esc(c.name)}</h2>
 
-      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''}</div>
+      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''} <span class="played-toggle${PLAYED.has(tag) ? ' played' : ''}" onclick="togglePlayedInline('${tag}', this, event)" title="${PLAYED.has(tag) ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span></div>
       <div class="pills">
         ${statusHtml}
         <span class="pill pill-gov clickable" onclick="setGovernmentFilter('${esc(c.government || '')}')">${esc(titleCase(c.government) || 'Unknown')}</span>
