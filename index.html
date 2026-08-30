@@ -562,6 +562,7 @@ body {
 .played-pill {
   display: inline-flex;
   align-items: center;
+  vertical-align: middle;
   gap: 4px;
   padding: 3px 7px 4px;
   border-radius: 5px;
@@ -865,6 +866,7 @@ body {
   font-weight: 500;
   color: var(--text-darker);
   text-decoration: none;
+  vertical-align: middle;
 }
 .wiki-btn:hover {
   border-color: var(--gold-darker);
@@ -2095,11 +2097,11 @@ function togglePlayedDetail(tag, btn) {
   if (PLAYED.has(tag)) {
     PLAYED.delete(tag);
     btn.classList.remove('active');
-    btn.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played?';
+    btn.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played';
   } else {
     PLAYED.add(tag);
     btn.classList.add('active');
-    btn.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played!';
+    btn.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played';
   }
   savePlayed();
   renderCountryList();
@@ -2111,11 +2113,11 @@ function togglePlayedInline(tag, el, e) {
   if (PLAYED.has(tag)) {
     PLAYED.delete(tag);
     el.classList.remove('active');
-    el.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played?';
+    el.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played';
   } else {
     PLAYED.add(tag);
     el.classList.add('active');
-    el.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played!';
+    el.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played';
   }
   savePlayed();
   renderCountryList();
@@ -2694,7 +2696,7 @@ function renderCountryList() {
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Played?'}">&#10003;</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Played'}">&#10003;</span>
     </div>`;
   }).join('');
 
@@ -4577,9 +4579,9 @@ function selectCountry(tag) {
         ${reg.region_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('rg:${esc(reg.region_name)}')">${esc(reg.region_name)}</span>` : ''}
         ${reg.superregion_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('sr:${esc(reg.superregion_name)}')">${esc(reg.superregion_name)}</span>` : ''}
       </div>
-      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played!' : 'Played?'}</span>
+      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
       ${w.found ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>` : ''}
-      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played!' : 'Played?'}</span>
+      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
     </div>
   </div>`;
 
