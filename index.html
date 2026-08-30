@@ -2684,8 +2684,8 @@ function renderCountryList() {
     const s = STATUS[c.tag] || {};
     const isFormable = s.status === 'formable' || s.status === 'both';
     let badges = '';
-    if (hasMissions) badges += '<span class="badge-dot missions" title="Has missions"></span>';
-    if (hasIdeas) badges += '<span class="badge-dot ideas" title="Has ideas"></span>';
+    if (hasMissions) badges += '<span class="badge-dot missions"></span>';
+    if (hasIdeas) badges += '<span class="badge-dot ideas"></span>';
     let statusBadge = isFormable ? '<span class="status-badge formable">Formable</span>' : '';
 
     const isPlayed = PLAYED.has(c.tag);
@@ -2696,7 +2696,7 @@ function renderCountryList() {
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Played'}">&#10003;</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)">&#10003;</span>
     </div>`;
   }).join('');
 
