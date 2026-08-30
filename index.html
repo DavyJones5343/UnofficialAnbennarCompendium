@@ -558,6 +558,38 @@ body {
 
 
 
+/* -----------------------------------------------------PLAYED TOGGLE IN NATIONS OVERVIEW------------------------------------------------------*/
+.played-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--bluegray-lighter);
+  background: var(--bluegray-darker);
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: all 0.18s var(--ease);
+}
+.played-pill:hover {
+  border-color: var(--gold-darker);
+  color: var(--text-lighter);
+}
+.played-pill.active {
+  border-color: rgba(74,186,106,0.4);
+  background: rgba(74,186,106,0.1);
+  color: var(--green);
+}
+
+
+
+
+
 
 /* MAIN CONTENT */
 #main {
@@ -2068,12 +2100,12 @@ function togglePlayedInline(tag, el, e) {
   if (e) e.stopPropagation();
   if (PLAYED.has(tag)) {
     PLAYED.delete(tag);
-    el.classList.remove('played');
-    el.title = 'Mark as played';
+    el.classList.remove('active');
+    el.innerHTML = 'Mark as Played';
   } else {
     PLAYED.add(tag);
-    el.classList.add('played');
-    el.title = 'Mark as unplayed';
+    el.classList.add('active');
+    el.innerHTML = '&#10003; Played';
   }
   savePlayed();
   renderCountryList();
@@ -4520,7 +4552,7 @@ function selectCountry(tag) {
 
       <h2>${esc(c.name)}</h2>
 
-      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''} <span class="played-toggle${PLAYED.has(tag) ? ' played' : ''}" onclick="togglePlayedInline('${tag}', this, event)" title="${PLAYED.has(tag) ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span></div>
+      <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''} <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)">${PLAYED.has(tag) ? '&#10003; Played' : 'Mark as Played'}</span></div>
       <div class="pills">
         ${statusHtml}
         <span class="pill pill-gov clickable" onclick="setGovernmentFilter('${esc(c.government || '')}')">${esc(titleCase(c.government) || 'Unknown')}</span>
