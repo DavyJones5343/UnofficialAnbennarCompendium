@@ -1811,7 +1811,7 @@ body {
   border: 1px solid var(--gold-darker);
 }
 .map-ctrl-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.35;
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -2082,47 +2082,55 @@ let activeFilters = new Set();
 // Played countries — persisted in localStorage
 let PLAYED = new Set(JSON.parse(localStorage.getItem('anbennar_played') || '[]'));
 function savePlayed() { localStorage.setItem('anbennar_played', JSON.stringify([...PLAYED])); }
-function togglePlayed(tag, e) {
-  if (e) e.stopPropagation();
-  if (PLAYED.has(tag)) PLAYED.delete(tag); else PLAYED.add(tag);
+
+
+
+
+
+function setPlayed(tag, value) {
+  if (value) PLAYED.add(tag); else PLAYED.delete(tag);
   savePlayed();
   renderCountryList();
   updatePlayedCount();
+  refreshPlayedUI(tag);
+}
+
+function refreshPlayedUI(tag) {
+  const isPlayed = PLAYED.has(tag);
+  const detail = document.getElementById('detail');
+  if (!detail || detail.dataset.tag !== tag) return;
+  const img = isPlayed ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png';
+  const pill = detail.querySelector('.played-pill');
+  if (pill) {
+    pill.classList.toggle('active', isPlayed);
+    pill.innerHTML = `<img src="${img}" onerror="this.style.display='none'"> Played`;
+  }
+  const btn = detail.querySelector('.played-btn');
+  if (btn) {
+    btn.classList.toggle('active', isPlayed);
+    btn.innerHTML = `<img src="${img}" onerror="this.style.display='none'"> Played`;
+  }
+}
+
+function togglePlayed(tag, e) {
+  if (e) e.stopPropagation();
+  setPlayed(tag, !PLAYED.has(tag));
 }
 function updatePlayedCount() {
   const el = document.getElementById('played-count');
   if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} total played)` : '';
 }
 function togglePlayedDetail(tag, btn) {
-  if (PLAYED.has(tag)) {
-    PLAYED.delete(tag);
-    btn.classList.remove('active');
-    btn.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played';
-  } else {
-    PLAYED.add(tag);
-    btn.classList.add('active');
-    btn.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played';
-  }
-  savePlayed();
-  renderCountryList();
-  updatePlayedCount();
+  setPlayed(tag, !PLAYED.has(tag));
 }
-
 function togglePlayedInline(tag, el, e) {
   if (e) e.stopPropagation();
-  if (PLAYED.has(tag)) {
-    PLAYED.delete(tag);
-    el.classList.remove('active');
-    el.innerHTML = '<img src="Ledger_no_crop.png" onerror="this.style.display=\'none\'"> Played';
-  } else {
-    PLAYED.add(tag);
-    el.classList.add('active');
-    el.innerHTML = '<img src="Ledger_yes_crop.png" onerror="this.style.display=\'none\'"> Played';
-  }
-  savePlayed();
-  renderCountryList();
-  updatePlayedCount();
+  setPlayed(tag, !PLAYED.has(tag));
 }
+
+
+
+
 
 async function loadData() {
   const el = document.getElementById('country-list');
@@ -6131,6 +6139,8 @@ function wmSetupInteraction(wrap) {
   wrap.addEventListener('mousedown', (e) => {
     dragging = true; didDrag = false;
     lastX = e.clientX; lastY = e.clientY;
+    const tt = document.getElementById('world-map-tooltip');
+    if (tt) tt.style.display = 'none';
   });
   wrap.addEventListener('mousemove', (e) => {
     const rect = wrap.getBoundingClientRect();
@@ -6138,6 +6148,8 @@ function wmSetupInteraction(wrap) {
     if (dragging) {
       const dx = e.clientX - lastX, dy = e.clientY - lastY;
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+      const tt = document.getElementById('world-map-tooltip');
+      if (tt) tt.style.display = 'none';
       wmOffX += dx; wmOffY += dy;
       lastX = e.clientX; lastY = e.clientY;
       wmApplyTransform();
