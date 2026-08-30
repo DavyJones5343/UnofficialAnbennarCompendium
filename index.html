@@ -750,7 +750,7 @@ body {
   color: var(--text-darker);
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
 
 /* MISSION DESCRIPTION */
@@ -4564,7 +4564,7 @@ function selectCountry(tag) {
         ${reg.region_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('rg:${esc(reg.region_name)}')">${esc(reg.region_name)}</span>` : ''}
         ${reg.superregion_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('sr:${esc(reg.superregion_name)}')">${esc(reg.superregion_name)}</span>` : ''}
       </div>
-      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)">${PLAYED.has(tag) ? 'Played!' : 'Mark as Played'}</span>
+      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)">${PLAYED.has(tag) ? 'Played!' : 'Played?'}</span>
       ${w.found ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>` : ''}
       <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)">${PLAYED.has(tag) ? 'Played!' : 'Played?'}</span>
     </div>
