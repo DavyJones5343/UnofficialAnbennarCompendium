@@ -200,9 +200,10 @@ body {
 }
 #search-input {
   width: 100%;
+  height: 100%;
   padding: 10px 10px;
   background: var(--bluegray-darker);
-  border: 1px solid var(--bluegray-lighter);
+  border: 1px solid var(--bluegray-darker);
   border-radius: 5px;
   color: var(--text-lighter);
   font-family: 'EB Garamond', serif;
@@ -301,7 +302,7 @@ body {
 
 #region-filter {
   padding: 0px 0px 0px 0px;
-  border-bottom: 1px solid var(--bluegray-lighter);
+  border-bottom: 1px solid var(--bluegray-darker);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -310,7 +311,7 @@ body {
   width: 100%;
   padding: 5px 30px 5px 10px;
   background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239c9caa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
-  border: 1px solid var(--bluegray-lighter);
+  border: 1px solid var(--bluegray-darker);
   border-radius: var(--radius-sm);
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
@@ -342,13 +343,14 @@ body {
 #active-filters {
   padding: 0px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0px;
   align-items: center;
   justify-content: flex-end;
   position: relative;
   user-select: none;
   flex-shrink: 0;
+  overflow: hidden;
 }
 #active-filters:empty {
   display: none; /* REMOVES ACTIVE FILTERS */
@@ -377,9 +379,13 @@ body {
   opacity: 1;
 }
 .clear-all-btn {
+  width: 100%;
+  height: 100%;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   margin-left: auto;
   border: 1px solid var(--bluegray-darker);
   background: var(--bluegray-darker);
@@ -409,8 +415,9 @@ body {
 
 .sidebyside {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 6px;
+  padding: 5px 0px 5px 0px;
 }
 
 
@@ -935,7 +942,7 @@ body {
   margin-bottom: 16px;
 }
 .lore-table td {
-  padding: 2px 0px;
+  padding: 0px 0px 2px 0px;
   /* border-bottom: 1px solid rgba(255,255,255,0.06); */
   font-size: 16px;
   font-weight: 500;
@@ -988,7 +995,6 @@ body {
   padding: 10px 20px;
   background: var(--bluegray-darker);
   cursor: pointer;
-  transition: color 0.2s var(--ease);
   
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -2118,7 +2124,7 @@ function togglePlayed(tag, e) {
 }
 function updatePlayedCount() {
   const el = document.getElementById('played-count');
-  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} total played)` : '';
+  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} played total)` : '';
 }
 function togglePlayedDetail(tag, btn) {
   setPlayed(tag, !PLAYED.has(tag));
@@ -2708,7 +2714,7 @@ function renderCountryList() {
     </div>`;
   }).join('');
 
-  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--text-darker)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' total played)' : ''}</span>`;
+  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--text-darker)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played total)' : ''}</span>`;
 
   list.querySelectorAll('.country-item').forEach(el => {
     el.addEventListener('click', () => selectCountry(el.dataset.tag));
