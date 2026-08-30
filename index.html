@@ -193,8 +193,6 @@ body {
 
 
 #search-box {
-  padding: 5px 0px 5px 0px;
-  /* border-bottom: 1px solid var(--bluegray-lighter); */
   flex: 1;
   min-width: 0;
 }
@@ -210,7 +208,6 @@ body {
   font-size: 16px;
   font-weight: 500;
   outline: none;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
 }
 #search-input:hover {
   border-color: var(--gold-darker);
@@ -301,8 +298,6 @@ body {
 
 
 #region-filter {
-  padding: 0px 0px 0px 0px;
-  border-bottom: 1px solid var(--bluegray-darker);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -562,41 +557,6 @@ body {
   color: var(--text-darker);
   text-align: center;
 }
-
-
-
-/* -----------------------------------------------------PLAYED TOGGLE IN NATIONS OVERVIEW------------------------------------------------------*/
-.played-pill {
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-  gap: 4px;
-  padding: 3px 7px 4px;
-  border-radius: 5px;
-  border: 1px solid var(--bluegray-lighter);
-  background: var(--bluegray-darker);
-  color: var(--text-darker);
-  font-family: 'EB Garamond', serif;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.played-pill:hover {
-  border-color: var(--gold-darker);
-  color: var(--text-lighter);
-}
-.played-pill.active {
-  /* border-color: var(--gold-lighter); */
-  /* color: var(--text-lighter); */
-}
-.played-pill img, .played-btn img {
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-  image-rendering: auto;
-}
-
 
 
 
@@ -862,23 +822,66 @@ body {
   display: none;
 }
 
-/* -------------------------------------------------WIKI BUTTON-----------------------------------------*/
-.wiki-btn {
+
+
+/* -----------------------------------------------------PLAYED TOGGLE IN NATIONS OVERVIEW-----------------------------------------------------
+.played-pill {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 4px;
+
   padding: 3px 7px 4px;
   border-radius: 5px;
   background: var(--bluegray-darker);
   border: 1px solid var(--bluegray-lighter);
-  border-radius: 5px;
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
-  color: var(--text-darker);
+  cursor: pointer;
+  white-space: nowrap;
   text-decoration: none;
+}
+.played-pill:hover {
+  border-color: var(--gold-darker);
+  color: var(--text-lighter);
+}
+.played-pill img, .played-btn img {
+  width: 16px;
+  height: 16px;
   vertical-align: middle;
+  image-rendering: auto;
+}
+
+/* -----------------------------------------------------WIKI BUTTON-----------------------------------------------------
+.wiki-btn {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 4px;
+
+  padding: 3px 7px 4px;
+  border-radius: 5px;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-lighter);
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 }
 .wiki-btn:hover {
   border-color: var(--gold-darker);
   color: var(--text-lighter);
 }
+
+
+
+
+
 
 
 
