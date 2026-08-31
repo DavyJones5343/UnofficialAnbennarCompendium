@@ -538,18 +538,21 @@ body {
   justify-content: center;
   font-size: 16px;
   font-weight: 500;
-  color: transparent;
   vertical-align: middle;
 }
 .played-toggle:hover {
   border-color: var(--gold-darker);
 }
-.played-toggle.played {
-  color: var(--text-darker);
+.played-toggle img {
+  width: 16px;
+  height: 16px;
+  display: none;
 }
-.country-item.is-played .name {
-  /* color: var(--text-darker); */
+.played-toggle.played img {
+  display: block;
 }
+
+
 #country-count {
   padding: 6px 12px;
   font-size: 16px;
@@ -557,8 +560,6 @@ body {
   color: var(--text-darker);
   text-align: center;
 }
-
-
 
 
 
@@ -2734,7 +2735,7 @@ function renderCountryList() {
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)">&#10003;</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)"><img src="Ledger_yes_crop.png" onerror="this.style.display='none'"></span>
     </div>`;
   }).join('');
 
