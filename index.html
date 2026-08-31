@@ -842,6 +842,10 @@ body {
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
+
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .played-pill:hover {
   border-color: var(--gold-darker);
@@ -876,6 +880,11 @@ body {
 .wiki-btn:hover {
   border-color: var(--gold-darker);
   color: var(--text-lighter);
+}
+.wiki-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 
@@ -4597,7 +4606,9 @@ function selectCountry(tag) {
         ${reg.superregion_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('sr:${esc(reg.superregion_name)}')">${esc(reg.superregion_name)}</span>` : ''}
       </div>
       <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
-      ${w.found ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>` : ''}
+       ${w.found
+        ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>`
+        : `<span class="wiki-btn disabled" title="No wiki page found for this nation">Wiki Page</span>`}
       <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
     </div>
   </div>`;
