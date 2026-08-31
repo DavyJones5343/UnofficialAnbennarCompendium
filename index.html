@@ -876,6 +876,10 @@ body {
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
+
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .wiki-btn:hover {
   border-color: var(--gold-darker);
@@ -1050,6 +1054,11 @@ body {
   color: var(--text-lighter);
 }
 
+.tab-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 /*
 .tab-btn.active::after {
@@ -4642,10 +4651,19 @@ function selectCountry(tag) {
 
   if (hasIdeas) { html += `<button class="tab-btn${!hasLore ? ' active' : ''}" data-tab="ideas">Ideas</button>`; firstTab = firstTab || 'ideas'; }
 
-  if (hasMissions) { html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="tab-star">&#9733;</span><span class="count">${c.missions.length}</span></button>`; firstTab = firstTab || 'missions'; }
+  if (hasMissions) {
+    html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="tab-star">&#9733;</span><span class="count">${c.missions.length}</span></button>`;
+    firstTab = firstTab || 'missions';
+  } else {
+    html += `<button class="tab-btn disabled" data-tab="missions" title="No mission tree for this nation">Missions</button>`;
+  }
   const hasMap = PROVINCE_OWNERS && PROVINCE_OWNERS[tag] && PROVINCE_OWNERS[tag].length > 0;
 
-  if (hasMap) { html += `<button class="tab-btn" data-tab="map">Location</button>`; }
+  if (hasMap) {
+    html += `<button class="tab-btn" data-tab="map">Location</button>`;
+  } else {
+    html += `<button class="tab-btn disabled" data-tab="map" title="No location data for this nation">Location</button>`;
+  }
 
   html += '</div>';
 
