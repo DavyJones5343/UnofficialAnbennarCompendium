@@ -4979,7 +4979,7 @@ function drawMissionConnectors(container) {
   defs.appendChild(marker);
   svg.appendChild(defs);
 
-  const ARROW_TIP_GAP = 6; // gap between arrowhead tip and target icon top
+  const ARROW_TIP_GAP = -6; // was 6 — negative value lets the arrowhead push INTO the target icon
 
   nodes.forEach(node => {
     const reqs = (node.dataset.reqs || '').split(',').filter(r => r);
@@ -4989,18 +4989,17 @@ function drawMissionConnectors(container) {
       const srcNode = nodeMap[reqId];
       if (!srcNode) return;
 
-      // Source: use FULL node rect (includes title text below icon)
-      // so arrow starts below the title, not through it
       const srcRect = srcNode.getBoundingClientRect();
-      // Target: use the ICON rect so arrowhead points at the icon
       const tgtIcon = node.querySelector('.mission-icon, .mission-icon-fallback');
       const tgtEl = tgtIcon || node;
       const tgtRect = tgtEl.getBoundingClientRect();
 
-      // Source: bottom-center of full node (below title text)
+      // Source: start HIGHER (subtract instead of add) so the line begins
+      // overlapping the bottom of the source node rather than just below it
       const srcX = srcRect.left - gridRect.left + srcRect.width / 2;
-      const srcY = srcRect.top - gridRect.top + srcRect.height + 2;
-      // Target: top-center of icon, with gap for arrowhead
+      const srcY = srcRect.top - gridRect.top + srcRect.height - 10;
+
+      // Target: end LOWER (into the icon) since ARROW_TIP_GAP is now negative
       const tgtX = tgtRect.left - gridRect.left + tgtRect.width / 2;
       const tgtY = tgtRect.top - gridRect.top - ARROW_TIP_GAP;
 
