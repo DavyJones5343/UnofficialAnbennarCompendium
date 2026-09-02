@@ -131,7 +131,7 @@ body {
   padding: 6px 14px;
   background: rgba(201,168,76,0.08);
   border: 1px solid var(--gold-darker);
-  border-radius: 4px;
+  border-radius: 5px;
   color: var(--gold-lighter);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -193,29 +193,30 @@ body {
 
 
 #search-box {
-  padding: 5px 0px 5px 0px;
-  /* border-bottom: 1px solid var(--bluegray-lighter); */
+  flex: 1;
+  min-width: 0;
 }
 #search-input {
-  width: 270px;
+  width: 100%;
+  height: 100%;
   padding: 10px 10px;
   background: var(--bluegray-darker);
-  border: 1px solid var(--bluegray-lighter);
+  border: 1px solid var(--bluegray-darker);
   border-radius: 5px;
   color: var(--text-lighter);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
   outline: none;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
 }
 #search-input:hover {
   border-color: var(--gold-darker);
 }
 #search-input:focus {
   border-color: var(--gold-lighter);
-  /* box-shadow: var(--ring-gold); */
-  /* background: rgba(0,0,0,0.5); */
+}
+#search-input.has-text {
+  border-color: var(--gold-lighter);
 }
 #search-input::placeholder {
   color: var(--text-darker);
@@ -255,9 +256,48 @@ body {
   /* box-shadow: 0 2px 8px rgba(201,168,76,0.25); */
 }
 
+/* -------------------------------------------Dropdown Filter Cancel----------------------------------------*/
+.filter-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.filter-select-wrap .filter-select {
+  flex: 1;
+  min-width: 0;
+}
+.select-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--bluegray-darker);
+  background: var(--bluegray-darker);
+  border-radius: 5px;
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0px 0px 4px 0px;
+}
+.select-clear-btn:hover {
+  color: var(--text-lighter);
+  border-color: var(--gold-darker);
+}
+/* Grayed out / inert when the paired select has no value selected */
+.filter-select:not(.has-selection) + .select-clear-btn {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+
+
 #region-filter {
-  padding: 0px 0px 0px 0px;
-  border-bottom: 1px solid var(--bluegray-lighter);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -265,8 +305,8 @@ body {
 .filter-select {
   width: 100%;
   padding: 5px 30px 5px 10px;
-  background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a7333' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
-  border: 1px solid var(--bluegray-lighter);
+  background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239c9caa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid var(--bluegray-darker);
   border-radius: var(--radius-sm);
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
@@ -276,14 +316,21 @@ body {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+#region-select.has-selection,
+#culture-select.has-selection,
+#religion-select.has-selection,
+#tech-select.has-selection,
+#gov-select.has-selection {
+  border-color: var(--gold-lighter);
 }
 .filter-select:hover {
   border-color: var(--gold-darker);
+  background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239c9caa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
 }
 .filter-select:focus {
   border-color: var(--gold-lighter);
-  background: var(--bluegray-darker);
+  background: var(--bluegray-darker) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239c9caa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 10px center;
 }
 .filter-select option {
   background: var(--bluegray-darker);
@@ -291,12 +338,14 @@ body {
 #active-filters {
   padding: 0px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0px;
   align-items: center;
   justify-content: flex-end;
   position: relative;
   user-select: none;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 #active-filters:empty {
   display: none; /* REMOVES ACTIVE FILTERS */
@@ -325,14 +374,18 @@ body {
   opacity: 1;
 }
 .clear-all-btn {
+  width: 100%;
+  height: 100%;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   margin-left: auto;
   border: 1px solid var(--bluegray-darker);
   background: var(--bluegray-darker);
-  padding: 5px 7px;
-  border-radius: 4px;
+  padding: 5px 7px 4px 7px;
+  border-radius: 5px;
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
   font-size: 30px;
@@ -347,10 +400,19 @@ body {
   color: var(--text-lighter);
   border: 1px solid var(--gold-darker);
 }
+
+.clear-all-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
 .sidebyside {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: stretch;
+  gap: 6px;
+  padding: 5px 0px 5px 0px;
 }
 
 
@@ -365,7 +427,7 @@ body {
   width: 6px;
 }
 #country-list::-webkit-scrollbar-thumb {
-  background: var(--text-darker); border-radius: 3px;
+  background: var(--text-darker); border-radius: 5px;
 }
 .country-item {
   display: flex;
@@ -373,8 +435,7 @@ body {
   padding: 2px 8px 2px 0px;
   cursor: pointer;
   border: 1px solid var(--bluegray-lighter);
-  border-radius: 0px 5px 5px 0px;
-  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+  border-radius: 5px 5px 5px 5px;
   gap: 8px;
 }
 .country-item:hover {
@@ -418,7 +479,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   padding: 1px 5px;
-  border-radius: 8px;
+  border-radius: 5px;
   font-family: 'EB Garamond', serif;
   flex-shrink: 0;
   display: none;
@@ -429,52 +490,69 @@ body {
   border: 1px solid rgba(155,114,207,0.3);
   display: none;
 }
+
+
+/* --------------------------------------------------HAS MT / HAS IDEAS FILTER INDEX BADGES--------------------------------------------- */
 .country-item .badges {
   display: flex;
   gap: 3px;
   flex-shrink: 0;
-  display: none;
+  padding-top: 2px;
 }
 .badge-dot {
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   display: inline-block;
+}
+.badge-dot.missions {
+  background: var(--text-darker);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
+  height: 10px;
+  width: 10px;
+}
+
+
+
+
+.badge-dot.ideas {
+  background: var(--gold-lighter);
   display: none;
 }
-.badge-dot.missions { background: var(--blue); }
-.badge-dot.ideas { background: var(--gold-lighter); }
+
+
+
+/* -----------------------------------------------------PLAYED TOGGLE------------------------------------------------------*/
 .played-toggle {
-  width: 18px; height: 18px;
-  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  border-radius: 3px;
-  border: 1px solid var(--bluegray-lighter);
+  border-radius: 5px;
+  border: 1px solid var(--bluegray-darker);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
   font-weight: 500;
-  color: transparent;
-  background: transparent;
-  transition: all 0.15s;
-  margin-right: 2px;
-  display: none;
+  vertical-align: middle;
 }
 .played-toggle:hover {
   border-color: var(--gold-darker);
-  background: rgba(201,168,76,0.08);
+}
+.played-toggle img {
+  width: 16px;
+  height: 16px;
   display: none;
 }
-.played-toggle.played {
-  color: var(--green);
-  border-color: rgba(74,186,106,0.4);
-  background: rgba(74,186,106,0.1);
-  display: none;
+.played-toggle.played img {
+  display: block;
 }
-.country-item.is-played .name {
-  color: var(--text-darker);
-  display: none;
-}
+
+
 #country-count {
   padding: 6px 12px;
   font-size: 16px;
@@ -482,7 +560,6 @@ body {
   color: var(--text-darker);
   text-align: center;
 }
-
 
 
 
@@ -494,14 +571,13 @@ body {
   scrollbar-color: var(--text-darker) transparent;
 }
 #main::-webkit-scrollbar { width: 6px; }
-#main::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 3px; }
+#main::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 5px; }
 
 #welcome {
   text-align: center;
   padding: 0px 0px 0px;
   color: var(--text-darker);
   margin: 0 auto;
-  animation: detailIn 0.4s var(--ease);
   /* max-width: 1000px; */
 }
 .welcome-rule {
@@ -586,11 +662,35 @@ body {
   color: var(--text-lighter);
 }
 
+
+.back-map-always {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 50;
+  border: 1px solid var(--bluegray-darker);
+  background: var(--bluegray-darker);
+  padding: 0px;
+  border-radius: 5px;
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+.back-map-always:hover {
+  color: var(--text-lighter);
+  border-color: var(--gold-darker);
+}
+
+
 /* COUNTRY DETAIL */
 #detail { display: none; }
 #detail.visible {
   display: block;
-  animation: detailIn 0.3s var(--ease);
   padding: 0px 10px 10px 10px;
 }
 @keyframes detailIn {
@@ -607,8 +707,8 @@ body {
   margin-top: 14px;
 }
 .detail-header img.flag {
-  width: 100px;
-  height: 100px;
+  width: 118px;
+  height: 118px;
   image-rendering: auto;
   flex-shrink: 0;
   box-shadow: 0 0px 10px var(--parchment);
@@ -625,11 +725,30 @@ body {
   color: var(--text-darker);
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
+/* MISSION DESCRIPTION */
+.mission-tree-text {
+  max-width: 517px;
+  margin-bottom: 16px;
+  background: var(--parchment);
+  border: 2px solid var(--gold-darker);
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-lighter);
+}
 
-
+.mission-tree-text h4 {
+  color: var(--gold-lighter);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 4px 0px 0px 0px;
+}
 
 .pills {
   display: flex;
@@ -673,6 +792,7 @@ body {
 .pill.pill-region:hover { border-color: var(--green); background: rgba(74,186,106,0.1); }
 .pill.pill-PlayableIn1444 { border-color: var(--green); color: var(--green); background: rgba(74,186,106,0.1); }
 .pill.pill-Formable { border-color: var(--purple); color: var(--purple); background: rgba(155,114,207,0.1); }
+/* .pill.pill-eventspawned { border-color: var(--red); color: var(--red); background: rgba(224,82,82,0.1); } */
 .pill.pill-UniqueMT { border-color: var(--gold-lighter); color: var(--gold-lighter); background: rgba(201,168,76,0.1); }
 .pill.pill-GenericMT { border-color: var(--text-darker); color: var(--text-darker); background: rgba(150,150,160,0.08); }
 
@@ -682,7 +802,7 @@ body {
   font-weight: 500;
   text-align: center;
   padding: 3px 6px;
-  border-radius: 4px;
+  border-radius: 5px;
   text-transform: uppercase;
   align-self: end;
   white-space: nowrap;
@@ -703,29 +823,83 @@ body {
   display: none;
 }
 
-.wiki-btn {
-  /* display: inline-flex; */
+
+
+/* -----------------------------------------------------PLAYED TOGGLE IN NATIONS OVERVIEW----------------------------------------------------- */
+.played-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  /* background: linear-gradient(135deg, #2a2518, #1e1a14); */
-  border: 1px solid var(--gold-darker);
-  border-radius: 4px;
-  color: var(--gold-darker);
+  vertical-align: middle;
+  gap: 4px;
+
+  padding: 3px 7px 4px;
+  border-radius: 5px;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-lighter);
+  color: var(--text-darker);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
   text-decoration: none;
-  margin-top: 10px;
-  transition: all 0.2s;
-  display: none;
+
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.played-pill:hover {
+  border-color: var(--gold-darker);
+  color: var(--text-lighter);
+}
+.played-pill img, .played-btn img {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  image-rendering: auto;
+}
+
+/* -----------------------------------------------------WIKI BUTTON----------------------------------------------------- */
+.wiki-btn {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 4px;
+
+  padding: 3px 7px 4px;
+  border-radius: 5px;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-lighter);
+  color: var(--text-darker);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .wiki-btn:hover {
-  background: var(--bluegray-darker);
-  border-color: var(--gold-lighter);
-  /* transform: translateY(-1px); */ 
-  /* box-shadow: 0 4px 12px rgba(0,0,0,0.35); */
+  border-color: var(--gold-darker);
+  color: var(--text-lighter);
 }
+.wiki-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
 .played-btn {
   display: inline-flex;
   align-items: center;
@@ -733,7 +907,7 @@ body {
   padding: 6px 14px;
   background: transparent;
   border: 1px solid var(--bluegray-lighter);
-  border-radius: 4px;
+  border-radius: 5px;
   color: var(--text-darker);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -776,15 +950,17 @@ body {
   font-weight: 500;
   margin-left: 4px;
 }
-.lore-read-more:hover { color: var(--gold-lighter); }
+.lore-read-more:hover {
+  color: var(--gold-lighter);
+}
 .lore-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
 }
 .lore-table td {
-  padding: 4px 0px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0px 0px 2px 0px;
+  /* border-bottom: 1px solid rgba(255,255,255,0.06); */
   font-size: 16px;
   font-weight: 500;
   vertical-align: top;
@@ -792,16 +968,19 @@ body {
 .lore-table .lore-label {
   color: var(--gold-lighter);
   font-weight: 500;
-  width: 160px;
+  width: 150px;
   white-space: nowrap;
 }
-
+.lore-table tr.lore-spacer td {
+  padding: 0px;
+  border-bottom: none;
+}
 
 .lore-text-full {
   background: var(--parchment);
   border: 2px solid var(--gold-darker);
-  border-radius: 4px;
-  padding: 10px 14px;
+  border-radius: 5px;
+  padding: 10px 10px;
 
   margin-top: 10px;
   font-family: 'EB Garamond', serif;
@@ -833,7 +1012,6 @@ body {
   padding: 10px 20px;
   background: var(--bluegray-darker);
   cursor: pointer;
-  transition: color 0.2s var(--ease);
   
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -859,7 +1037,32 @@ body {
   color: var(--text-darker);
   margin-left: 5px;
 }
+.tab-btn .tab-star {
+  font-size: 12px;
+  color: var(--text-darker);
+  margin-left: 6px;
+}
+.tab-btn:hover .tab-star {
+  color: var(--text-lighter);
+}
+.tab-btn.active .tab-star {
+  color: var(--text-lighter);
+}
+.tab-btn:hover .count {
+  color: var(--text-lighter);
+}
+.tab-btn.active .count {
+  color: var(--text-lighter);
+}
 
+.tab-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 /*
 .tab-btn.active::after {
@@ -915,7 +1118,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   color: var(--gold-lighter);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 
@@ -923,8 +1126,8 @@ body {
 .idea-card {
   background: var(--parchment);
   border: 2px solid var(--gold-darker);
-  border-radius: 4px;
-  padding: 10px 14px;
+  border-radius: 5px;
+  padding: 10px 10px;
 }
 .idea-card h4 {
   font-family: 'EB Garamond', serif;
@@ -1044,7 +1247,7 @@ body {
 .mission-connectors path {
   fill: none;
   stroke: var(--gold-darker);
-  stroke-width: 5;
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -1101,12 +1304,13 @@ body {
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 12px;
+  max-width: 517px;
 }
 .campaign-btn {
   padding: 3px 7px 4px;
   background: transparent;
   border: 1px solid var(--bluegray-darker);
-  border-radius: 4px;
+  border-radius: 5px;
   color: var(--text-darker);
   background: var(--bluegray-darker);
   font-family: 'EB Garamond', serif;
@@ -1123,6 +1327,18 @@ body {
   border: 1px solid var(--gold-lighter);
   color: var(--text-lighter);
 }
+
+.filter-btn:disabled, .filter-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.filter-select:disabled, .filter-select.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 
 /* --------------------MISSION TEXT OVERVIEWS-------------------- */
 #mission-modal-overlay {
@@ -1141,16 +1357,16 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--bluegray-darker);
+  background: var(--parchment);
   border: 2px solid var(--gold-darker);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 10px;
   z-index: 1000;
   max-width: 600px;
   width: 100%;
   max-height: 80vh;
   overflow-y: auto;
-  animation: modalIn 0.22s var(--ease);
+  /* animation: modalIn 0.22s var(--ease); */
 }
 
 @keyframes modalIn {
@@ -1165,7 +1381,7 @@ body {
 }
 #mission-modal .close-btn:hover { color: var(--text-lighter); }
 #mission-modal::-webkit-scrollbar { width: 6px; }
-#mission-modal::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 3px; }
+#mission-modal::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 5px; }
 #mission-modal h3 {
   font-family: 'EB Garamond', serif;
   color: var(--gold-lighter);
@@ -1177,13 +1393,12 @@ body {
   gap: 10px;
 }
 #mission-modal h3 img {
-  width: 48px; height: 48px;
-  border-radius: 3px;
-  border: 1px solid var(--bluegray-lighter);
+  width: 48px;
+  height: 48px;
 }
 #mission-modal h3 .modal-icon-placeholder {
   width: 48px; height: 48px;
-  border-radius: 4px;
+  border-radius: 5px;
   flex-shrink: 0;
 }
 #mission-modal .mission-desc {
@@ -1219,8 +1434,7 @@ body {
 
 /* --------------------MISSION TEXT REQUIREMENTS-------------------- */
 .requirements-box {
-  background: var(--bluegray-darker);
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 5px 5px 0;
   margin: 8px 0;
   font-size: 16px;
   font-weight: 500;
@@ -1232,7 +1446,7 @@ body {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 6px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .requirements-box ul {
   list-style: none;
@@ -1273,7 +1487,7 @@ body {
 
 /* Effects display */
 .effects-box {
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 5px 5px 0;
   margin: 8px 0;
   font-size: 16px;
   font-weight: 500;
@@ -1335,7 +1549,7 @@ body {
   position: fixed;
   background: var(--parchment);
   border: 1px solid var(--gold-darker);
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 8px 12px;
   min-width: 220px;
   max-width: 320px;
@@ -1370,7 +1584,7 @@ body {
 .script-block {
   background: var(--parchment);
   border: 1px solid var(--bluegray-lighter);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 10px 12px;
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -1386,12 +1600,12 @@ body {
 
 
 .detail-header .info h2 a {
-  color: inherit;
-  text-decoration: none;
+  /* color: inherit; */
+  /* text-decoration: none; */
 }
 .detail-header .info h2 a:hover {
-  color: var(--text-lighter);
-  text-decoration: none;
+  /* color: var(--text-lighter); */
+  /* text-decoration: none; */
 }
 
 
@@ -1404,7 +1618,7 @@ body {
   transform: translate(-50%, -50%);
   background: var(--bluegray-lighter);
   border: 2px solid var(--gold-darker);
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 24px;
   z-index: 1000;
   max-width: 500px;
@@ -1440,12 +1654,11 @@ body {
 }
 #religion-panel .close-btn:hover { color: var(--text-lighter); }
 #religion-panel::-webkit-scrollbar { width: 6px; }
-#religion-panel::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 3px; }
+#religion-panel::-webkit-scrollbar-thumb { background: var(--bluegray-lighter); border-radius: 5px; }
 
 /* RESPONSIVE MOBILE MOBILE-------------------------------------------------------------------------------------------------------------------*/
 @media (max-width: 768px) {
 
-  /* AI MIGHT BE BAD DAVYJONES */
   .tab-content.active[data-tab="ideas"] > .idea-card {
     flex-basis: 100%;
   }
@@ -1492,6 +1705,9 @@ body {
   .back-to-map {
     display: block !important;
   }
+  .back-map-always {
+    display: none !important;
+  }
   .filter-btn {
     padding: 3px 6px 4px 6px !important;
   }
@@ -1506,7 +1722,10 @@ body {
   .tab-nav { flex-wrap: wrap; gap: 0; }
   .tab-btn { font-size: 16px; padding: 8px 10px; }
   /* Info table: let labels wrap */
-  .lore-table .lore-label { white-space: normal; width: 120px; }
+  .lore-table .lore-label {
+    white-space: normal;
+    width: 150px;
+  }
   .lore-table td { padding: 5px 8px; font-size: 16px; }
   /* Mission grid: let it scroll horizontally with smaller nodes */
   /* Mission modal: full-width on mobile */
@@ -1547,8 +1766,12 @@ body {
   font-family: 'EB Garamond', serif;
 }
 
-/* Toggle for raw script view */
+/* Toggle for raw script view: Reveal Raw Code */
 .toggle-raw {
+  padding: 3px 7px 4px;
+  border-radius: 5px;
+  background: var(--bluegray-darker);
+  border: 1px solid var(--bluegray-darker);
   font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
@@ -1558,8 +1781,14 @@ body {
   display: inline-block;
 }
 .toggle-raw:hover {
+  border-color: var(--gold-darker);
   color: var(--text-lighter);
 }
+
+
+
+
+
 
 
 /* Map */
@@ -1601,7 +1830,7 @@ body {
   border: none;
   color: var(--text-darker);
   font-size: 26px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1612,6 +1841,11 @@ body {
   color: var(--text-lighter);
   border: 1px solid var(--gold-darker);
 }
+.map-ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 
 #mobile-toggle {
@@ -1620,7 +1854,7 @@ body {
   border: none;
   color: var(--text-darker);
   font-size: 26px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -1631,7 +1865,7 @@ body {
   display: block !important;
   background: none;
   border: 1px solid var(--gold-darker);
-  border-radius: 4px;
+  border-radius: 5px;
   color: var(--gold-lighter);
   padding: 6px 10px;
   cursor: pointer;
@@ -1652,7 +1886,7 @@ body {
   border: 1px solid var(--gold-lighter);
   color: var(--text-lighter);
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 20px;
   pointer-events: none;
   display: none;
@@ -1666,8 +1900,8 @@ body {
   left: 8px;
   background: var(--bluegray-darker);
   border: 1px solid var(--gold-lighter);
-  border-radius: 6px;
-  padding: 10px 14px;
+  border-radius: 5px;
+  padding: 10px 10px;
   font-family: 'EB Garamond', serif;
   font-size: 16px;
   font-weight: 500;
@@ -1703,7 +1937,7 @@ body {
   /*
   background: var(--bluegray-darker);
   border: 1px solid var(--bluegray-lighter);
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 8px 12px;
   */
   margin-bottom: 8px;
@@ -1739,7 +1973,7 @@ body {
   right: 8px;
   background: var(--bluegray-darker);
   border: 1px solid var(--gold-lighter);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 6px 10px;
   font-family: 'EB Garamond', serif;
   font-size: 16px;
@@ -1756,14 +1990,14 @@ body {
 .map-legend-swatch {
   width: 12px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: 5px;
   border: none;
 }
 
 /* Mini-map tooltip for province/area/region references */
 .geo-ref { text-decoration: underline dotted rgba(212,175,55,0.5); text-underline-offset: 2px; cursor: default; }
 .geo-ref:hover { text-decoration-color: var(--gold-lighter); color: var(--gold-lighter); }
-#geo-tooltip { position: fixed; z-index: 9999; pointer-events: none; display: none; background: rgba(10,10,20,0.97); border: 1px solid var(--gold-lighter); border-radius: 6px; padding: 0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+#geo-tooltip { position: fixed; z-index: 9999; pointer-events: none; display: none; background: rgba(10,10,20,0.97); border: 1px solid var(--gold-lighter); border-radius: 5px; padding: 0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
 #geo-tooltip canvas { display: block; border-radius: 5px; }
 #geo-tooltip .geo-label { padding: 4px 8px; font-size: 16px; color: var(--text-darker); text-align: center; border-top: 1px solid rgba(212,175,55,0.2); white-space: nowrap; }
 </style>
@@ -1797,11 +2031,26 @@ body {
     </div>
 
     <div id="region-filter">
-      <select id="region-select" class="filter-select"><option value="">Region...</option></select>
-      <select id="culture-select" class="filter-select"><option value="">Culture Group...</option></select>
-      <select id="religion-select" class="filter-select"><option value="">Religion...</option></select>
-      <select id="tech-select" class="filter-select"><option value="">Tech Group...</option></select>
-      <select id="gov-select" class="filter-select"><option value="">Government...</option></select>
+      <div class="filter-select-wrap">
+        <select id="region-select" class="filter-select"><option value="">Region...</option></select>
+        <button type="button" class="select-clear-btn" data-target="region-select" aria-label="Clear region filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="culture-select" class="filter-select"><option value="">Culture Group...</option></select>
+        <button type="button" class="select-clear-btn" data-target="culture-select" aria-label="Clear culture filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="religion-select" class="filter-select"><option value="">Religion...</option></select>
+        <button type="button" class="select-clear-btn" data-target="religion-select" aria-label="Clear religion filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="tech-select" class="filter-select"><option value="">Tech Group...</option></select>
+        <button type="button" class="select-clear-btn" data-target="tech-select" aria-label="Clear tech filter">&times;</button>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="gov-select" class="filter-select"><option value="">Government Type...</option></select>
+        <button type="button" class="select-clear-btn" data-target="gov-select" aria-label="Clear government filter">&times;</button>
+      </div>
     </div>
     <div id="filters">
       <button class="filter-btn" data-filter="PlayableIn1444">Playable In 1444</button>
@@ -1809,7 +2058,7 @@ body {
       <button class="filter-btn" data-filter="EventSpawned">Event Spawned</button>
       <button class="filter-btn" data-filter="HasMT">Has MT</button>
       <button class="filter-btn" data-filter="UniqueMT">Unique MT</button>
-      <button class="filter-btn" data-filter="GenericMT">Generic MT</button>
+      <button class="filter-btn" data-filter="GenericMT">Region Shared MT</button>
       <!-- <button class="filter-btn" data-filter="needs-lore" title="Countries with missions or tag-specific ideas authored but no startup lore in startup_lore.json — these are upstream content gaps where lore writers could contribute">Needs Lore</button> -->
       <!-- <button class="filter-btn" data-filter="played">Played</button> -->
       <!-- <button class="filter-btn" data-filter="unplayed">Unplayed</button> -->
@@ -1829,8 +2078,8 @@ body {
       </div>
       <div class="map-controls">
         <button id="mobile-toggle">&#9776;</button>
-        <button class="map-ctrl-btn" onclick="wmZoom(1)">+</button>
-        <button class="map-ctrl-btn" onclick="wmZoom(-1)">&minus;</button>
+        <button class="map-ctrl-btn" id="wm-zoom-in" onclick="wmZoom(1)">+</button>
+        <button class="map-ctrl-btn" id="wm-zoom-out" onclick="wmZoom(-1)">&minus;</button>
         <button class="map-ctrl-btn" onclick="wmResetView()">&#8853;</button>
       </div>
       <div id="world-map-status"></div>
@@ -1848,6 +2097,9 @@ body {
 <script>
 // --- DATA ---
 let DATA = {}, RELIGIONS = {}, WIKI = {}, REGIONS = {}, TRIGGERS = {}, STATUS = {}, ICON_MAP = {}, PROVINCES = {}, MODIFIERS = {}, STARTUP_LORE = {}, PROVINCE_OWNERS = {}, DIPLOMACY = {}, PROV_DETAILS = {}, AREA_DATA = {}, EVENT_NAMES = {}, GREAT_PROJECTS = {}, SCRIPTED = {}, NAMES = {};
+
+let MISSION_LOC_TEXT = '';
+
 // Map state
 let mapBaseImg = null, mapIdImg = null, mapIdData = null, mapBounds = null;
 let mapScale = 1, mapOffX = 0, mapOffY = 0, mapCurrentTag = null;
@@ -1856,36 +2108,67 @@ const MAP_W = 5632, MAP_H = 2048;
 let countries = [];
 let filteredCountries = [];
 let selectedTag = null;
-let renderLimit = 200;
+let renderLimit = 310;
 let activeFilters = new Set();
 // Played countries — persisted in localStorage
 let PLAYED = new Set(JSON.parse(localStorage.getItem('anbennar_played') || '[]'));
 function savePlayed() { localStorage.setItem('anbennar_played', JSON.stringify([...PLAYED])); }
-function togglePlayed(tag, e) {
-  if (e) e.stopPropagation();
-  if (PLAYED.has(tag)) PLAYED.delete(tag); else PLAYED.add(tag);
+
+
+
+
+
+function setPlayed(tag, value) {
+  if (value) PLAYED.add(tag); else PLAYED.delete(tag);
   savePlayed();
   renderCountryList();
   updatePlayedCount();
+  refreshPlayedUI(tag);
+}
+
+function refreshPlayedUI(tag) {
+  const isPlayed = PLAYED.has(tag);
+  const detail = document.getElementById('detail');
+  if (!detail || detail.dataset.tag !== tag) return;
+  const img = isPlayed ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png';
+  const pill = detail.querySelector('.played-pill');
+  if (pill) {
+    pill.classList.toggle('active', isPlayed);
+    pill.innerHTML = `<img src="${img}" onerror="this.style.display='none'"> Played`;
+  }
+  const btn = detail.querySelector('.played-btn');
+  if (btn) {
+    btn.classList.toggle('active', isPlayed);
+    btn.innerHTML = `<img src="${img}" onerror="this.style.display='none'"> Played`;
+  }
+}
+
+function togglePlayed(tag, e) {
+  if (e) e.stopPropagation();
+  setPlayed(tag, !PLAYED.has(tag));
 }
 function updatePlayedCount() {
   const el = document.getElementById('played-count');
-  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} played)` : '';
+  if (el) el.textContent = PLAYED.size > 0 ? `(${PLAYED.size} played total)` : '';
 }
 function togglePlayedDetail(tag, btn) {
-  if (PLAYED.has(tag)) { PLAYED.delete(tag); btn.classList.remove('active'); btn.innerHTML = 'Mark as Played'; }
-  else { PLAYED.add(tag); btn.classList.add('active'); btn.innerHTML = '&#10003; Played'; }
-  savePlayed();
-  renderCountryList();
-  updatePlayedCount();
+  setPlayed(tag, !PLAYED.has(tag));
 }
+function togglePlayedInline(tag, el, e) {
+  if (e) e.stopPropagation();
+  setPlayed(tag, !PLAYED.has(tag));
+}
+
+
+
+
 
 async function loadData() {
   const el = document.getElementById('country-list');
   el.innerHTML = '<div class="loading">Loading data...</div>';
   try {
     const v = '1785501791';
-    const [d1, d2, d3, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19] = await Promise.all([
+    const [d1, d2, d3, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20] = await Promise.all([
       fetch('anbennar_data.json?v='+v).then(r => r.json()),
       fetch('religions_data.json?v='+v).then(r => r.json()),
       fetch('wiki_data.json?v='+v).then(r => r.json()),
@@ -1904,8 +2187,10 @@ async function loadData() {
       fetch('great_projects.json?v='+v).then(r => r.json()).catch(() => ({})),
       fetch('scripted_defs.json?v='+v).then(r => r.json()).catch(() => ({})),
       fetch('display_names.json?v='+v).then(r => r.json()).catch(() => ({})),
+      fetch('anb_repurposed_dlc_buttons_l_english.yml?v='+v).then(r => r.text()).catch(() => ''),
     ]);
     DATA = d1; RELIGIONS = d2; WIKI = d3; REGIONS = d5; TRIGGERS = d6; STATUS = d7; ICON_MAP = d8; PROVINCES = d9; MODIFIERS = d10 || {}; STARTUP_LORE = d11 || {}; PROVINCE_OWNERS = d12 || {}; DIPLOMACY = d13 || {}; PROV_DETAILS = d14 || {}; AREA_DATA = d15 || {}; EVENT_NAMES = d16 || {}; GREAT_PROJECTS = d17 || {}; SCRIPTED = d18 || {}; NAMES = d19 || {};
+    MISSION_LOC_TEXT = d20 || '';
 
     countries = Object.values(DATA);
     countries.sort(countrySorter);
@@ -1947,14 +2232,21 @@ function classifyMissions() {
   });
 }
 
+// function countrySorter(a, b) {
+//   const wa = WIKI[a.tag], wb = WIKI[b.tag];
+//   const hasWikiA = wa && wa.found ? 1 : 0;
+//   const hasWikiB = wb && wb.found ? 1 : 0;
+//   if (hasWikiA !== hasWikiB) return hasWikiB - hasWikiA;
+//   const sizeA = wa ? (wa.page_size || wa.page_length || 0) : 0;
+//   const sizeB = wb ? (wb.page_size || wb.page_length || 0) : 0;
+//   if (sizeA !== sizeB) return sizeB - sizeA;
+//   return a.name.localeCompare(b.name);
+// }
+
 function countrySorter(a, b) {
-  const wa = WIKI[a.tag], wb = WIKI[b.tag];
-  const hasWikiA = wa && wa.found ? 1 : 0;
-  const hasWikiB = wb && wb.found ? 1 : 0;
-  if (hasWikiA !== hasWikiB) return hasWikiB - hasWikiA;
-  const sizeA = wa ? (wa.page_size || wa.page_length || 0) : 0;
-  const sizeB = wb ? (wb.page_size || wb.page_length || 0) : 0;
-  if (sizeA !== sizeB) return sizeB - sizeA;
+  if (!a.name && !b.name) return 0;
+  if (!a.name) return 1;   // push blank names to the end
+  if (!b.name) return -1;
   return a.name.localeCompare(b.name);
 }
 
@@ -2040,17 +2332,17 @@ function populateRegions() {
     }
   }
   [...srs.keys()].sort().forEach(sr => {
-    const grp = document.createElement('optgroup');
-    grp.label = sr;
     const srOpt = document.createElement('option');
-    srOpt.value = 'sr:' + sr; srOpt.textContent = '\u25B8 ' + sr + ' (all)';
-    grp.appendChild(srOpt);
+    srOpt.value = 'sr:' + sr;
+    srOpt.textContent = sr + ' Superregion';
+    srOpt.style.fontWeight = 'bold';
+    srOpt.style.color = 'var(--text-lighter)';
+    sel.appendChild(srOpt);
     [...srs.get(sr)].sort().forEach(rn => {
       const opt = document.createElement('option');
       opt.value = 'rg:' + rn; opt.textContent = rn;
-      grp.appendChild(opt);
+      sel.appendChild(opt);
     });
-    sel.appendChild(grp);
   });
 }
 
@@ -2067,21 +2359,43 @@ function matchesRegionFilter(c, regionVal) {
   return reg.superregion_name === regionVal || reg.region_name === regionVal;
 }
 
+function updateSelectDisabledState(id) {
+  const sel = document.getElementById(id);
+  const isEmpty = sel.options.length <= 1; // only the "Region..."/"Culture Group..." placeholder remains
+  sel.disabled = isEmpty;
+  sel.classList.toggle('disabled', isEmpty);
+  sel.title = isEmpty ? 'No nations match this combination of filters' : '';
+}
+
 function updateFilterDropdowns() {
   const region = document.getElementById('region-select').value;
   const culture = document.getElementById('culture-select').value;
   const religion = document.getElementById('religion-select').value;
   const tech = document.getElementById('tech-select').value;
   const gov = document.getElementById('gov-select').value;
+  const query = document.getElementById('search-input').value.toLowerCase().trim(); // <-- add
 
-  // Get eligible countries (those that pass non-dropdown filters)
   const eligible = countries.filter(c => {
     const w = WIKI[c.tag];
     const hasWiki = w && w.found && (w.page_size || w.page_length || 0) > 500;
     const hasMissions = c.missions && c.missions.length > 0;
     const hasIdeas = c.ideas && c.ideas.ideas && c.ideas.ideas.length > 0;
-    if (!hasWiki && !hasMissions && !hasIdeas) return false;
-    return passesFilter(c);
+    if (!hasWiki && !hasMissions && !hasIdeas && !query) return false; // <-- allow search-only matches through, like applyFilters does
+    if (!passesFilter(c)) return false;
+    if (query) { // <-- add this whole block
+      const score = Math.max(
+        fuzzyScore(query, c.name),
+        fuzzyScore(query, c.tag),
+        fuzzyScore(query, c.primary_culture),
+        fuzzyScore(query, c.religion),
+        fuzzyScore(query, c.culture_group),
+        fuzzyScore(query, c.government),
+        fuzzyScore(query, c.technology_group),
+        fuzzyScore(query, c.adjective)
+      );
+      if (score === 0) return false;
+    }
+    return true;
   });
 
   // For each dropdown, compute valid options based on all OTHER active filters
@@ -2110,16 +2424,32 @@ function updateFilterDropdowns() {
   const repopulate = (id, values, currentVal) => {
     const sel = document.getElementById(id);
     const defaultText = sel.options[0].textContent;
+
     sel.innerHTML = '';
+
     const defOpt = document.createElement('option');
-    defOpt.value = ''; defOpt.textContent = defaultText;
+    defOpt.value = '';
+    defOpt.textContent = defaultText;
     sel.appendChild(defOpt);
+
     [...values].sort().forEach(v => {
       const opt = document.createElement('option');
-      opt.value = v; opt.textContent = titleCase(v);
+      opt.value = v;
+      opt.textContent = titleCase(v);
       sel.appendChild(opt);
     });
-    sel.value = values.has(currentVal) ? currentVal : '';
+
+    //sel.value = values.has(currentVal) ? currentVal : '';
+
+    const stillValid = values.has(currentVal);
+    sel.value = stillValid ? currentVal : '';
+
+    // Reset the selected-state styling if the option was invalidated
+    if (stillValid) {
+      sel.classList.add('has-selection');
+    } else {
+      sel.classList.remove('has-selection');
+    }
   };
 
   repopulate('culture-select', validCultures, culture);
@@ -2150,38 +2480,46 @@ function updateFilterDropdowns() {
     }
   });
   [...srMap.keys()].sort().forEach(sr => {
-    const grp = document.createElement('optgroup');
-    grp.label = sr;
     const srOpt = document.createElement('option');
-    srOpt.value = 'sr:' + sr; srOpt.textContent = '\u25B8 ' + sr + ' (all)';
-    grp.appendChild(srOpt);
+    srOpt.value = 'sr:' + sr;
+    srOpt.textContent = sr + ' Superregion';
+    srOpt.style.fontWeight = 'bold';
+    srOpt.style.color = 'var(--text-lighter)';
+    rSel.appendChild(srOpt);
     srMap.get(sr).sort().forEach(rn => {
       const opt = document.createElement('option');
       opt.value = 'rg:' + rn; opt.textContent = rn;
-      grp.appendChild(opt);
+      rSel.appendChild(opt);
     });
-    rSel.appendChild(grp);
   });
   rSel.value = validRegions.has(region) ? region : '';
+  const regionStillValid = validRegions.has(region);
+
+  rSel.value = regionStillValid ? region : '';
+
+  if (regionStillValid) {
+    rSel.classList.add('has-selection');
+  } else {
+    rSel.classList.remove('has-selection');
+  }
+
+  ['region-select', 'culture-select', 'religion-select', 'tech-select', 'gov-select'].forEach(updateSelectDisabledState);
 }
 
-function passesFilter(c) {
-  if (activeFilters.size === 0) return true;
+function passesFilter(c, filters) {
+  filters = filters || activeFilters;
+  if (filters.size === 0) return true;
   const s = STATUS[c.tag] || {};
-  // Direct-lookup intent: when a search query is active, ignore the "what kind
-  // of nation" filters so users can always
-  // find a specific tag by name. Independent qualifiers (missions/played) stay.
   const hasSearch = document.getElementById('search-input').value.trim() !== '';
   if (!hasSearch) {
-    if (activeFilters.has('PlayableIn1444') && !(s.status === 'playable' || s.status === 'both')) return false;
-    if (activeFilters.has('Formable') && !(s.status === 'formable' || s.status === 'both')) return false;
-    if (activeFilters.has('EventSpawned') && !(s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0)) return false;
+    if (filters.has('PlayableIn1444') && !(s.status === 'playable' || s.status === 'both')) return false;
+    if (filters.has('Formable') && !(s.status === 'formable' || s.status === 'both')) return false;
+    if (filters.has('EventSpawned') && !(s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0)) return false;
   }
-  if (activeFilters.has('HasMT') && !(c.missions && c.missions.length > 0)) return false;
-  if (activeFilters.has('UniqueMT') && c.mission_class !== 'unique') return false;
-  if (activeFilters.has('GenericMT') && c.mission_class !== 'regional') return false;
-  if (activeFilters.has('needs-lore')) {
-    // Has content (missions or tag-specific ideas) but no startup lore entry
+  if (filters.has('HasMT') && !(c.missions && c.missions.length > 0)) return false;
+  if (filters.has('UniqueMT') && c.mission_class !== 'unique') return false;
+  if (filters.has('GenericMT') && c.mission_class !== 'regional') return false;
+  if (filters.has('needs-lore')) {
     const hasMissions = c.missions && c.missions.length > 0;
     const tagIdeas = (c.ideas && c.ideas.ideas) ? c.ideas.ideas.filter(i => i && i.name && i.name.startsWith(c.tag + '_')).length : 0;
     const hasContent = hasMissions || tagIdeas > 0;
@@ -2189,9 +2527,66 @@ function passesFilter(c) {
     const hasLore = !!(lore && lore.lore && lore.lore.trim());
     if (!(hasContent && !hasLore)) return false;
   }
-  if (activeFilters.has('played') && !PLAYED.has(c.tag)) return false;
-  if (activeFilters.has('unplayed') && PLAYED.has(c.tag)) return false;
+  if (filters.has('played') && !PLAYED.has(c.tag)) return false;
+  if (filters.has('unplayed') && PLAYED.has(c.tag)) return false;
   return true;
+}
+
+function countForFilters(filters) {
+  const query = document.getElementById('search-input').value.toLowerCase().trim();
+  const region = document.getElementById('region-select').value;
+  const culture = document.getElementById('culture-select').value;
+  const religion = document.getElementById('religion-select').value;
+  const tech = document.getElementById('tech-select').value;
+  const gov = document.getElementById('gov-select').value;
+  const hasSearch = query.length > 0;
+  const eventSpawnedActive = filters.has('EventSpawned');
+  let count = 0;
+
+  countries.forEach(c => {
+    const w = WIKI[c.tag];
+    const hasWiki = w && w.found && (w.page_size || w.page_length || 0) > 500;
+    const hasMissions = c.missions && c.missions.length > 0;
+    const hasIdeas = c.ideas && c.ideas.ideas && c.ideas.ideas.length > 0;
+    if (!hasWiki && !hasMissions && !hasIdeas && !hasSearch && !eventSpawnedActive) return;
+
+    if (!passesFilter(c, filters)) return;
+    if (culture && c.culture_group !== culture) return;
+    if (religion && c.religion !== religion) return;
+    if (tech && c.technology_group !== tech) return;
+    if (gov && c.government !== gov) return;
+    if (region && !matchesRegionFilter(c, region)) return;
+
+    if (query) {
+      const score = Math.max(
+        fuzzyScore(query, c.name), fuzzyScore(query, c.tag), fuzzyScore(query, c.primary_culture),
+        fuzzyScore(query, c.religion), fuzzyScore(query, c.culture_group),
+        fuzzyScore(query, c.government), fuzzyScore(query, c.technology_group), fuzzyScore(query, c.adjective)
+      );
+      if (score === 0) return;
+    }
+    count++;
+  });
+  return count;
+}
+
+function updateFilterButtonStates() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const f = btn.dataset.filter;
+    if (activeFilters.has(f)) {
+      // Always allow turning an active filter back off
+      btn.disabled = false;
+      btn.classList.remove('disabled');
+      btn.title = '';
+      return;
+    }
+    const hypothetical = new Set(activeFilters);
+    hypothetical.add(f);
+    const wouldBeEmpty = countForFilters(hypothetical) === 0;
+    btn.disabled = wouldBeEmpty;
+    btn.classList.toggle('disabled', wouldBeEmpty);
+    btn.title = wouldBeEmpty ? 'No nations match this combination of filters' : '';
+  });
 }
 
 function applyFilters() {
@@ -2250,10 +2645,11 @@ function applyFilters() {
   }
 
   filteredCountries = scored.map(s => s.c);
-  renderLimit = 200;
+  renderLimit = 310;
   renderCountryList();
   renderActiveFilters();
   updateFilterDropdowns();
+  updateFilterButtonStates();
   scheduleWorldMapRender();
 }
 
@@ -2280,14 +2676,10 @@ function renderActiveFilters() {
     chips.push({ label: titleCase(f), clear: () => { activeFilters.delete(f); document.querySelector(`.filter-btn[data-filter="${f}"]`).classList.remove('active'); } });
   });
 
-  if (chips.length === 0) {
-    container.innerHTML = chips.map((ch, i) =>
-    `<span class="active-chip">${esc(ch.label)} <span class="chip-x" data-idx="${i}">&times;</span></span>`).join('') + '<span class="clear-all-btn">&#8634;</span>';
-  }
-
+  const isEmpty = chips.length === 0;
   container.innerHTML = chips.map((ch, i) =>
     `<span class="active-chip">${esc(ch.label)} <span class="chip-x" data-idx="${i}">&times;</span></span>`
-  ).join('') + '<span class="clear-all-btn">&#8634;</span>';
+  ).join('') + `<button class="clear-all-btn" type="button"${isEmpty ? ' disabled' : ''} aria-label="Clear all filters">&#8634;</button>`;
 
   container.querySelectorAll('.chip-x').forEach(x => {
     x.addEventListener('click', () => { chips[parseInt(x.dataset.idx)].clear(); applyFilters(); });
@@ -2296,12 +2688,25 @@ function renderActiveFilters() {
 }
 
 function clearAllFilters() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('region-select').value = '';
-  document.getElementById('culture-select').value = '';
-  document.getElementById('religion-select').value = '';
-  document.getElementById('tech-select').value = '';
-  document.getElementById('gov-select').value = '';
+  const searchInput = document.getElementById('search-input');
+  searchInput.value = '';
+  searchInput.classList.remove('has-text');
+
+
+   const selectIds = [
+    'region-select',
+    'culture-select',
+    'religion-select',
+    'tech-select',
+    'gov-select'
+  ];
+
+  selectIds.forEach(id => {
+    const select = document.getElementById(id);
+    select.value = '';
+    select.classList.remove('has-selection');
+  });
+  
   activeFilters.clear();
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   applyFilters();
@@ -2318,22 +2723,23 @@ function renderCountryList() {
     const s = STATUS[c.tag] || {};
     const isFormable = s.status === 'formable' || s.status === 'both';
     let badges = '';
-    if (hasMissions) badges += '<span class="badge-dot missions" title="Has missions"></span>';
-    if (hasIdeas) badges += '<span class="badge-dot ideas" title="Has ideas"></span>';
+    if (hasMissions) badges += '<span class="badge-dot missions"></span>';
+    if (hasIdeas) badges += '<span class="badge-dot ideas"></span>';
     let statusBadge = isFormable ? '<span class="status-badge formable">Formable</span>' : '';
 
     const isPlayed = PLAYED.has(c.tag);
     return `<div class="country-item${selectedTag === c.tag ? ' selected' : ''}${isPlayed ? ' is-played' : ''}" data-tag="${c.tag}">
-      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)" title="${isPlayed ? 'Mark as unplayed' : 'Mark as played'}">&#10003;</span>
+      
       <img class="flag" src="flags/${c.tag}.png" onerror="this.style.display='none'" loading="lazy">
       <span class="name">${esc(c.name)}</span>
       ${statusBadge}
       <span class="badges">${badges}</span>
       <span class="tag-label">${c.tag}</span>
+      <span class="played-toggle${isPlayed ? ' played' : ''}" onclick="togglePlayed('${c.tag}', event)"><img src="Ledger_yes_crop.png" onerror="this.style.display='none'"></span>
     </div>`;
   }).join('');
 
-  count.innerHTML = `${filteredCountries.length} countries <span id="played-count" style="color:var(--green)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played)' : ''}</span>`;
+  count.innerHTML = `${filteredCountries.length} nations found <span id="played-count" style="color:var(--text-darker)">${PLAYED.size > 0 ? '(' + PLAYED.size + ' played total)' : ''}</span>`;
 
   list.querySelectorAll('.country-item').forEach(el => {
     el.addEventListener('click', () => selectCountry(el.dataset.tag));
@@ -2368,15 +2774,52 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFilters();
     });
   });
-  document.getElementById('search-input').addEventListener('input', applyFilters);
-  ['region-select','culture-select','religion-select','tech-select','gov-select'].forEach(id => {
-    document.getElementById(id).addEventListener('change', applyFilters);
+
+
+
+  
+  // document.getElementById('search-input').addEventListener('input', applyFilters);
+
+  const searchInput = document.getElementById('search-input');
+
+  searchInput.addEventListener('input', () => {
+    searchInput.classList.toggle('has-text', searchInput.value.trim() !== '');
+    applyFilters();
   });
+
+
+
+
+  ['region-select','culture-select','religion-select','tech-select','gov-select'].forEach(id => {
+    const select = document.getElementById(id);
+
+    select.addEventListener('change', () => {
+      select.classList.toggle('has-selection', select.value !== '');
+      applyFilters();
+    });
+  });
+
+  // ADD THIS:
+  document.querySelectorAll('.select-clear-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const select = document.getElementById(btn.dataset.target);
+      select.value = '';
+      select.classList.remove('has-selection');
+      applyFilters();
+    });
+  });
+
   document.getElementById('mobile-toggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('mobile-open');
   });
   document.getElementById('religion-overlay').addEventListener('click', closeReligionPanel);
   document.getElementById('mission-modal-overlay').addEventListener('click', closeMissionModal);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.add('mobile-open');
+  }
 });
 
 function provName(id) {
@@ -4158,14 +4601,7 @@ function selectCountry(tag) {
   </a>
   <div class="info">
 
-
-      <!-- <h2>${esc(c.name)}</h2> -->
-
-      <h2>
-       <a href="${esc(wikiLink)}" target="_blank" rel="noopener">
-          ${esc(c.name)}
-        </a>
-      </h2>
+      <h2>${esc(c.name)}</h2>
 
       <div class="tag-adj"><span class="color-dot" style="background:${color}"></span> ${tag}${c.adjective && c.adjective.trim() && c.adjective !== c.name ? ' &middot; ' + esc(c.adjective) : ''}</div>
       <div class="pills">
@@ -4182,8 +4618,11 @@ function selectCountry(tag) {
         ${reg.region_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('rg:${esc(reg.region_name)}')">${esc(reg.region_name)}</span>` : ''}
         ${reg.superregion_name ? `<span class="pill pill-region clickable" onclick="setRegionFilter('sr:${esc(reg.superregion_name)}')">${esc(reg.superregion_name)}</span>` : ''}
       </div>
-      ${w.found ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>` : ''}
-      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)">${PLAYED.has(tag) ? '&#10003; Played' : 'Mark as Played'}</span>
+      <span class="played-pill${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedInline('${tag}', this, event)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
+       ${w.found
+        ? `<a href="${esc(wikiLink)}" target="_blank" rel="noopener" class="wiki-btn">Wiki Page</a>`
+        : `<span class="wiki-btn disabled" title="No wiki page found for this nation">Wiki Page</span>`}
+      <span class="played-btn${PLAYED.has(tag) ? ' active' : ''}" onclick="togglePlayedDetail('${tag}', this)"><img src="${PLAYED.has(tag) ? 'Ledger_yes_crop.png' : 'Ledger_no_crop.png'}" onerror="this.style.display='none'"> ${PLAYED.has(tag) ? 'Played' : 'Played'}</span>
     </div>
   </div>`;
 
@@ -4216,10 +4655,19 @@ function selectCountry(tag) {
 
   if (hasIdeas) { html += `<button class="tab-btn${!hasLore ? ' active' : ''}" data-tab="ideas">Ideas</button>`; firstTab = firstTab || 'ideas'; }
 
-  if (hasMissions) { html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="count">${c.missions.length}</span></button>`; firstTab = firstTab || 'missions'; }
+  if (hasMissions) {
+    html += `<button class="tab-btn${!hasLore && !hasIdeas ? ' active' : ''}" data-tab="missions">Missions<span class="tab-star">&#9733;</span><span class="count">${c.missions.length}</span></button>`;
+    firstTab = firstTab || 'missions';
+  } else {
+    html += `<button class="tab-btn disabled" data-tab="missions" title="No mission tree for this nation">Missions</button>`;
+  }
   const hasMap = PROVINCE_OWNERS && PROVINCE_OWNERS[tag] && PROVINCE_OWNERS[tag].length > 0;
 
-  if (hasMap) { html += `<button class="tab-btn" data-tab="map">Location</button>`; }
+  if (hasMap) {
+    html += `<button class="tab-btn" data-tab="map">Location</button>`;
+  } else {
+    html += `<button class="tab-btn disabled" data-tab="map" title="No location data for this nation">Location</button>`;
+  }
 
   html += '</div>';
 
@@ -4229,23 +4677,44 @@ function selectCountry(tag) {
     // Country info table
     html += '<div class="lore-info-table">';
     const infoRows = [];
-    if (s.status === 'playable' || s.status === 'both') infoRows.push(['Playable In 1444?', '<span class="pill pill-playable">Yes</span>']);
-    if (s.status === 'formable' || s.status === 'both') infoRows.push(['Formable?', '<span class="pill pill-formable">Yes</span>']);
-    if (c.primary_culture) infoRows.push(['Primary Culture', esc(c.primary_culture)]);
-    if (c.culture_group) infoRows.push(['Culture Group', esc(c.culture_group)]);
-    if (c.accepted_cultures && c.accepted_cultures.length) infoRows.push(['Accepted Cultures', c.accepted_cultures.map(ac => esc(ac)).join(', ')]);
-    if (c.religion) infoRows.push(['Religion', `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}`]);
-    if (c.government) infoRows.push(['Government', esc(titleCase(c.government))]);
-    if (c.government_rank) infoRows.push(['Government Rank', c.government_rank]);
-    if (c.government_reforms && c.government_reforms.length) infoRows.push(['Reforms', c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ')]);
-    if (c.technology_group) infoRows.push(['Technology Group', esc(c.technology_group)]);
-    if (reg.region_name) infoRows.push(['Region', esc(reg.region_name)]);
-    if (reg.superregion_name) infoRows.push(['Superregion', esc(reg.superregion_name)]);
-    if (s.provinces_owned) infoRows.push(['Starting Provinces', s.provinces_owned]);
-    if (c.historical_rivals && c.historical_rivals.length) infoRows.push(['Historical Rivals', c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
-    if (c.historical_friends && c.historical_friends.length) infoRows.push(['Historical Friends', c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ')]);
+    infoRows.push(['Playable In 1444?', (s.status === 'playable' || s.status === 'both') ? '<span class="pill pill-playable">Yes</span>' : 'No']);
+    infoRows.push(['Formable?', (s.status === 'formable' || s.status === 'both') ? '<span class="pill pill-formable">Yes</span>' : 'No']);
+    infoRows.push(['Event Spawned?', (s.status === 'other' && (s.provinces_owned || 0) === 0 && (c.event_count || 0) > 0) ? '<span class="pill pill-eventspawned">Yes</span>' : 'No']);
+
+    infoRows.push([null, null]);
+
+    infoRows.push(['Superregion', reg.superregion_name ? esc(reg.superregion_name) : '']);
+    infoRows.push(['Region', reg.region_name ? esc(reg.region_name) : '']);
+    infoRows.push(['Starting Provinces', s.provinces_owned || '—']);
+
+    infoRows.push([null, null]);
+
+    infoRows.push(['Culture Group', c.culture_group ? esc(c.culture_group) : '']);
+    infoRows.push(['Primary Culture', c.primary_culture ? esc(c.primary_culture) : '']);
+    infoRows.push(['Accepted Cultures', (c.accepted_cultures && c.accepted_cultures.length) ? c.accepted_cultures.map(ac => esc(ac)).join(', ') : '—']);
+
+    infoRows.push([null, null]);
+
+    infoRows.push(['Religion', c.religion ? `<img src="religion_icons/${c.religion_id || ''}.png" style="height:14px;vertical-align:middle" onerror="this.style.display='none'"> ${esc(c.religion)}` : '']);
+    infoRows.push(['Technology Group', c.technology_group ? esc(c.technology_group) : '']);
+
+    infoRows.push([null, null]);
+
+    infoRows.push(['Government Type', c.government ? esc(titleCase(c.government)) : '']);
+    const GOV_RANK_NAMES = { 1: 'Duchy', 2: 'Kingdom', 3: 'Empire' };
+    infoRows.push(['Government Rank', c.government_rank ? `${GOV_RANK_NAMES[c.government_rank] || 'Rank ' + c.government_rank} (${c.government_rank})` : '']);
+    infoRows.push(['Starting Reform', (c.government_reforms && c.government_reforms.length) ? c.government_reforms.map(r => esc(r.replace(/_/g, ' '))).join(', ') : '']);
+
+    infoRows.push([null, null]);
+
+    infoRows.push(['Historical Friends', (c.historical_friends && c.historical_friends.length) ? c.historical_friends.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '—']);
+    infoRows.push(['Historical Rivals', (c.historical_rivals && c.historical_rivals.length) ? c.historical_rivals.map(r => { const rn = DATA[r]; return rn ? esc(rn.name) : r; }).join(', ') : '—']);
+    
     html += '<table class="lore-table">';
-    infoRows.forEach(([label, val]) => { html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`; });
+    infoRows.forEach(([label, val]) => {
+      if (label === null) { html += `<tr class="lore-spacer"><td colspan="2">&nbsp;</td></tr>`; return; }
+      html += `<tr><td class="lore-label">${label}</td><td>${val}</td></tr>`;
+    });
     html += '</table></div>';
 
     // Lore text (startup lore from game, then wiki lore)
@@ -4288,6 +4757,10 @@ function selectCountry(tag) {
   // Missions tab
   if (hasMissions) {
     html += `<div class="tab-content${firstTab === 'missions' ? ' active' : ''}" data-tab="missions">`;
+    const missionTreeText = getMissionTreeText(c.tag, MISSION_LOC_TEXT);
+    if (missionTreeText) {
+      html += `<div class="mission-tree-text" data-tag="${esc(c.tag)}">${formatMissionTreeText(missionTreeText)}</div>`;
+    }
     html += renderMissions(c);
     html += '</div>';
   }
@@ -4325,7 +4798,9 @@ function selectCountry(tag) {
     html += '</div>';
   }
 
-  detail.innerHTML = '<button class="back-to-map" onclick="showWorldMap()">UNOFFICIAL ANBENNAR COMPENDIUM</button>' + html;
+  detail.innerHTML = '<button class="back-to-map" onclick="showWorldMap()">UNOFFICIAL ANBENNAR COMPENDIUM</button>'
+  + '<button class="back-map-always" onclick="showWorldMap()">&#66327;</button>'
+  + html;
 
   // Track whether connectors have been drawn for missions tab
   let _connectorsDrawn = false;
@@ -4505,7 +4980,7 @@ function drawMissionConnectors(container) {
   defs.appendChild(marker);
   svg.appendChild(defs);
 
-  const ARROW_TIP_GAP = 6; // gap between arrowhead tip and target icon top
+  const ARROW_TIP_GAP = -6; // was 6 — negative value lets the arrowhead push INTO the target icon
 
   nodes.forEach(node => {
     const reqs = (node.dataset.reqs || '').split(',').filter(r => r);
@@ -4515,33 +4990,35 @@ function drawMissionConnectors(container) {
       const srcNode = nodeMap[reqId];
       if (!srcNode) return;
 
-      // Source: use FULL node rect (includes title text below icon)
-      // so arrow starts below the title, not through it
       const srcRect = srcNode.getBoundingClientRect();
-      // Target: use the ICON rect so arrowhead points at the icon
       const tgtIcon = node.querySelector('.mission-icon, .mission-icon-fallback');
       const tgtEl = tgtIcon || node;
       const tgtRect = tgtEl.getBoundingClientRect();
 
-      // Source: bottom-center of full node (below title text)
+      // Source: start HIGHER (subtract instead of add) so the line begins
+      // overlapping the bottom of the source node rather than just below it
       const srcX = srcRect.left - gridRect.left + srcRect.width / 2;
-      const srcY = srcRect.top - gridRect.top + srcRect.height + 2;
-      // Target: top-center of icon, with gap for arrowhead
+      const srcY = srcRect.top - gridRect.top + srcRect.height - 10;
+
+      // Target: end LOWER (into the icon) since ARROW_TIP_GAP is now negative
       const tgtX = tgtRect.left - gridRect.left + tgtRect.width / 2;
       const tgtY = tgtRect.top - gridRect.top - ARROW_TIP_GAP;
 
       if (tgtY <= srcY) return;
 
-      const path = document.createElementNS(svgNS, 'path');
+     const path = document.createElementNS(svgNS, 'path');
       let d;
 
       if (Math.abs(srcX - tgtX) < 5) {
+        // Same column: keep it a straight vertical line
         d = `M${srcX},${srcY} L${tgtX},${tgtY}`;
       } else {
-        // Route horizontal segment just below source node (in the gap between rows)
-        // to avoid crossing through other nodes' text
-        const horizY = srcY + 8;
-        d = `M${srcX},${srcY} L${srcX},${horizY} L${tgtX},${horizY} L${tgtX},${tgtY}`;
+        // Different column: smooth S-curve via cubic bezier.
+        // Control points pull the curve vertically out of each node before
+        // bending sideways, producing the rounded look instead of a hard elbow.
+        const c1Y = srcY + (tgtY - srcY) * 0.7;
+        const c2Y = srcY + (tgtY - srcY) * 0.3;
+        d = `M${srcX},${srcY} C${srcX},${c1Y} ${tgtX},${c2Y} ${tgtX},${tgtY}`;
       }
 
       path.setAttribute('d', d);
@@ -4604,6 +5081,83 @@ function renderMissions(c) {
     const campMissions = missions.filter(m => baseGroups.has(m.group || '') || campaignGroupNames.has(m.group || ''));
     html += `<div class="mission-grid-container campaign-grid" data-campaign="${esc(flag)}" style="display:none">${renderMissionGrid(campMissions, missionById, c.tag)}</div>`;
   });
+
+  return html;
+}
+
+// Generic (shared) mission tree keys — the prefix used in both mission
+// group names (e.g. "AYN_Branch_1") and the loc file (LANDING_missions_AYN_TEXT)
+const GENERIC_MISSION_KEYS = [
+  'caamas', 'peitar', 'selphereg', 'snecboth', 'tuathak', 'dotimism',
+  'cannorian_kobold', 'dwarven_adventurer', 'escanni_adventurer',
+  'escanni_goblin', 'escanni_orc', 'vyzemby', 'kaino', 'ghankedhen',
+  'raghamidesh', 'ghavanaj', 'undergrowth_goblin', 'xiaken', 'shuuvush',
+  'fathide_ogres', 'wild_ogres', 'centaur', 'triunic', 'primal_harimari',
+  'AYN', 'iochand'
+];
+
+function findMissionTreeKey(tag, yamlText) {
+  // 1. Try direct tag match (unique trees — the common case)
+  if (new RegExp(`LANDING_missions_${tag}_TEXT:0`).test(yamlText)) {
+    return tag;
+  }
+  // 2. Fall back to generic/shared trees — match this tag's mission
+  // group names against known generic key prefixes
+  const c = DATA[tag];
+  if (!c || !c.missions) return null;
+  const groupNames = new Set(c.missions.map(m => m.group || ''));
+  for (const key of GENERIC_MISSION_KEYS) {
+    for (const g of groupNames) {
+      if (g.toLowerCase().startsWith(key.toLowerCase())) return key;
+    }
+  }
+  return null;
+}
+
+function getMissionTreeText(tag, yamlText) {
+  const key = findMissionTreeKey(tag, yamlText);
+  if (!key) return null;
+  const re = new RegExp(`LANDING_missions_${key}_TEXT:0\\s*"([^"]*(?:\\\\.[^"]*)*)"`);
+  const match = yamlText.match(re);
+  if (!match) return null;
+  return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+}
+
+function renderMissionText(tag, yamlText) {
+  const text = getMissionTreeText(tag, yamlText);
+  if (!text) return '<p>No custom mission tree found for this tag.</p>';
+  return `<div class="mission-tree-text" data-tag="${esc(tag)}">
+    <p>${esc(text).replace(/\n/g, '<br>')}</p>
+  </div>`;
+}
+
+// Renders mission tree flavor text. Lines containing §Y...§! markers
+// (used for credits like "§YDesigner§!: Runehawk") become <h4> headers
+// with the markers stripped; everything else stays as normal paragraph text.
+function formatMissionTreeText(text) {
+  const lines = text.split('\n');
+  let html = '';
+  let paraBuffer = [];
+
+  function flushPara() {
+    if (paraBuffer.length) {
+      html += `<p>${paraBuffer.map(esc).join('<br>')}</p>`;
+      paraBuffer = [];
+    }
+  }
+
+  lines.forEach(line => {
+    if (/§Y.*?§!/.test(line)) {
+      flushPara();
+      const clean = line.replace(/§Y/g, '').replace(/§!/g, '');
+      html += `<h4>${esc(clean)}</h4>`;
+    } else if (line.trim() === '') {
+      flushPara();
+    } else {
+      paraBuffer.push(line);
+    }
+  });
+  flushPara();
 
   return html;
 }
@@ -5016,7 +5570,7 @@ function mapZoom(dir) {
   if (!container) return;
   const cw = container.clientWidth, ch = container.clientHeight;
   const cx = cw/2, cy = ch/2;
-  const factor = dir > 0 ? 1.3 : 1/1.3;
+  const factor = dir > 0 ? 1.50 : 1/1.50;
   const newScale = Math.max(0.5, Math.min(10, mapScale * factor));
   mapOffX = cx - (cx - mapOffX) * (newScale / mapScale);
   mapOffY = cy - (cy - mapOffY) * (newScale / mapScale);
@@ -5180,7 +5734,7 @@ function setupMapInteraction(container, canvas) {
     e.preventDefault();
     const rect = container.getBoundingClientRect();
     const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    const factor = e.deltaY < 0 ? 1.15 : 1/1.15;
+    const factor = e.deltaY < 0 ? 1.50 : 1/1.50;
     const newScale = Math.max(0.5, Math.min(10, mapScale * factor));
     mapOffX = mx - (mx - mapOffX) * (newScale / mapScale);
     mapOffY = my - (my - mapOffY) * (newScale / mapScale);
@@ -5521,11 +6075,56 @@ async function renderWorldMap() {
   }
 }
 
+function clampWorldMapOffset() {
+  const wrap = document.getElementById('world-map-wrap');
+  const canvas = document.getElementById('world-map-canvas');
+  if (!wrap || !canvas) return;
+
+  const cw = wrap.clientWidth, ch = wrap.clientHeight;
+  // Use the canvas's actual CSS size (unaffected by transform) rather than
+  // recomputing it from MAP_W/MAP_H/wmFitScale, which can go stale.
+  const baseW = canvas.offsetWidth;
+  const baseH = canvas.offsetHeight;
+
+  const effW = baseW * wmScale;
+  const effH = baseH * wmScale;
+
+  const minX = Math.min(0, cw - effW);
+  const maxX = Math.max(0, cw - effW);
+  wmOffX = Math.min(maxX, Math.max(minX, wmOffX));
+
+  const minY = Math.min(0, ch - effH);
+  const maxY = Math.max(0, ch - effH);
+  wmOffY = Math.min(maxY, Math.max(minY, wmOffY));
+}
+
 function wmApplyTransform() {
   const canvas = document.getElementById('world-map-canvas');
   if (!canvas) return;
+  clampWorldMapOffset(); // NEW CLAMP WORLD MAP
   canvas.style.transformOrigin = '0 0';
   canvas.style.transform = 'translate(' + wmOffX + 'px, ' + wmOffY + 'px) scale(' + wmScale + ')';
+  wmUpdateZoomButtons();
+}
+
+function wmUpdateZoomButtons() {
+  const inBtn = document.getElementById('wm-zoom-in');
+  const outBtn = document.getElementById('wm-zoom-out');
+  if (!inBtn || !outBtn) return;
+  const eps = 0.01;
+  inBtn.disabled = wmScale >= 20 - eps;
+  outBtn.disabled = wmScale <= wmMinScale() + eps;
+}
+
+function wmMinScale() {
+  const wrap = document.getElementById('world-map-wrap');
+  const canvas = document.getElementById('world-map-canvas');
+  if (!wrap || !canvas) return 0.8;
+  const cw = wrap.clientWidth, ch = wrap.clientHeight;
+  const baseW = canvas.offsetWidth, baseH = canvas.offsetHeight;
+  if (!baseW || !baseH) return 0.8;
+  // Smallest scale where the map still fully covers the container in both dimensions
+  return Math.max(cw / baseW, ch / baseH);
 }
 
 function wmResetView() {
@@ -5533,14 +6132,12 @@ function wmResetView() {
   if (!wrap) return;
   const cw = wrap.clientWidth, ch = wrap.clientHeight;
   if (wmLandBox) {
-    // Fill the frame height with the inhabited land strip, centered on the
-    // densest part of the world; the rest stays reachable by pan/zoom.
     const [x1, y1, x2, y2] = wmLandBox;
     const bh = (y2 - y1) * wmFitScale;
     wmScale = Math.max(1, ch / (bh * 1.02));
+    wmScale = Math.max(wmScale, wmMinScale());   // <-- add this line
     const fx = wmFocus ? wmFocus[0] : (x1 + x2) / 2;
     const fy = wmFocus ? wmFocus[1] : (y1 + y2) / 2;
-    // Clamp focus so the viewport stays within the land box where possible
     const viewW = cw / (wmScale * wmFitScale), viewH = ch / (wmScale * wmFitScale);
     const cxm = Math.max(x1 + viewW / 2, Math.min(x2 - viewW / 2, fx));
     const cym = Math.max(y1 + viewH / 2, Math.min(y2 - viewH / 2, fy));
@@ -5548,6 +6145,7 @@ function wmResetView() {
     wmOffY = ch / 2 - cym * wmFitScale * wmScale;
   } else {
     wmScale = Math.max(1, ch / (MAP_H * wmFitScale));
+    wmScale = Math.max(wmScale, wmMinScale());   // <-- add this line too
     wmOffX = (cw - MAP_W * wmFitScale * wmScale) / 2;
     wmOffY = (ch - MAP_H * wmFitScale * wmScale) / 2;
   }
@@ -5558,8 +6156,8 @@ function wmZoom(dir) {
   const wrap = document.getElementById('world-map-wrap');
   if (!wrap) return;
   const cx = wrap.clientWidth / 2, cy = wrap.clientHeight / 2;
-  const factor = dir > 0 ? 1.3 : 1 / 1.3;
-  const newScale = Math.max(0.8, Math.min(20, wmScale * factor));
+  const factor = dir > 0 ? 1.50 : 1 / 1.50;
+  const newScale = Math.max(wmMinScale(), Math.min(20, wmScale * factor));
   wmOffX = cx - (cx - wmOffX) * (newScale / wmScale);
   wmOffY = cy - (cy - wmOffY) * (newScale / wmScale);
   wmScale = newScale;
@@ -5582,6 +6180,8 @@ function wmSetupInteraction(wrap) {
   wrap.addEventListener('mousedown', (e) => {
     dragging = true; didDrag = false;
     lastX = e.clientX; lastY = e.clientY;
+    const tt = document.getElementById('world-map-tooltip');
+    if (tt) tt.style.display = 'none';
   });
   wrap.addEventListener('mousemove', (e) => {
     const rect = wrap.getBoundingClientRect();
@@ -5589,6 +6189,8 @@ function wmSetupInteraction(wrap) {
     if (dragging) {
       const dx = e.clientX - lastX, dy = e.clientY - lastY;
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+      const tt = document.getElementById('world-map-tooltip');
+      if (tt) tt.style.display = 'none';
       wmOffX += dx; wmOffY += dy;
       lastX = e.clientX; lastY = e.clientY;
       wmApplyTransform();
@@ -5638,19 +6240,20 @@ function wmSetupInteraction(wrap) {
     e.preventDefault();
     const rect = wrap.getBoundingClientRect();
     const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-    const newScale = Math.max(0.8, Math.min(20, wmScale * factor));
+    const factor = e.deltaY < 0 ? 1.50 : 1 / 1.50;
+    const newScale = Math.max(wmMinScale(), Math.min(20, wmScale * factor));
     wmOffX = mx - (mx - wmOffX) * (newScale / wmScale);
     wmOffY = my - (my - wmOffY) * (newScale / wmScale);
     wmScale = newScale;
     wmApplyTransform();
-  }, { passive: false });
+}, { passive: false });
 
   addPinchZoom(wrap, {
-    min: 0.8, max: 20,
+    min: wmMinScale(),   // was: 0.8
+    max: 20,
     getScale: () => wmScale,
     getOff: () => [wmOffX, wmOffY],
-    set: (s, x, y) => { wmScale = s; wmOffX = x; wmOffY = y; wmApplyTransform(); }
+    set: (s, x, y) => { wmScale = Math.max(wmMinScale(), s); wmOffX = x; wmOffY = y; wmApplyTransform(); }
   });
 }
 
