@@ -14,7 +14,7 @@
   --bluegray-darker: #161b20;
 
   --gold-lighter: #e3c035;
-  --gold-darker: #6b5828;
+  --gold-darker: #987c34;
 
   --text-lighter: #ffffff;
   --text-darker: #9c9caa;
@@ -28,7 +28,7 @@
   --red: #e05252;
   --blue: #5b9bd5;
   --purple: #9b72cf;
-  --sidebar-w: 336px;
+  --sidebar-w: 350px;
   --header-h: 60px;
   --radius: 10px;
   --radius-sm: 6px;
@@ -161,12 +161,15 @@ body {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
   background: var(--bluegray-lighter);
-  border-right: 3px solid var(--bluegray-lighter);
+  border: 5px solid var(--gold-darker);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   padding-left: 8px;
   padding-right: 8px;
+  padding-bottom: 8px;
+  box-shadow: inset 0px 0px 10px 0px var(--mapcolor-lighter);
+  border-style: double;
 }
 
 #unofficial_anbennar_compendium_title {
@@ -1824,27 +1827,16 @@ body {
   z-index: 2;
   padding: 0px 0px 0px 8px;
 }
+
 .map-ctrl-btn {
-  width: 40px; height: 40px;
-  background: var(--bluegray-darker);
-  border: none;
-  color: var(--text-darker);
+  color: var(--gold-darker);
   font-size: 26px;
-  border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0px 10px var(--parchment);
-}
-.map-ctrl-btn:hover {
-  color: var(--text-lighter);
-  border: 1px solid var(--gold-darker);
-}
-.map-ctrl-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  pointer-events: none;
+  width: 40px;
+  height: 40px;
 }
 
 
@@ -2000,6 +1992,72 @@ body {
 #geo-tooltip { position: fixed; z-index: 9999; pointer-events: none; display: none; background: rgba(10,10,20,0.97); border: 1px solid var(--gold-lighter); border-radius: 5px; padding: 0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
 #geo-tooltip canvas { display: block; border-radius: 5px; }
 #geo-tooltip .geo-label { padding: 4px 8px; font-size: 16px; color: var(--text-darker); text-align: center; border-top: 1px solid rgba(212,175,55,0.2); white-space: nowrap; }
+
+button,
+.map-ctrl-btn,
+#mobile-toggle,
+.clear-all-btn,
+.select-clear-btn,
+.filter-btn,
+.tab-btn,
+.campaign-btn,
+#mission-modal .close-btn,
+#religion-panel .close-btn,
+.back-to-map,
+.back-map-always,
+.wiki-btn,
+.played-pill,
+.played-btn,
+.toggle-raw {
+  font-family: 'EB Garamond', serif;
+  cursor: pointer;
+  text-shadow: 0 0 5px var(--mapcolor-darker);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(145deg, #4a6078 0%, #364a60 50%, #2c3d52 100%) padding-box,
+    linear-gradient(145deg, #d4a94f, #7a5a22 50%, #c49a42) border-box;
+  box-shadow:
+    0 0 10px var(--parchment),
+    inset 0 0 0 1px #1b2634,
+    inset 0 0 6px 2px rgba(0, 0, 0, 0.35),
+    inset 3px 3px 3px rgba(255, 255, 255, 0.5),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.5);
+}
+
+button:hover,
+.map-ctrl-btn:hover,
+#mobile-toggle:hover,
+.clear-all-btn:hover,
+.select-clear-btn:hover,
+.filter-btn:hover,
+.tab-btn:hover,
+.campaign-btn:hover,
+#mission-modal .close-btn:hover,
+#religion-panel .close-btn:hover,
+.back-to-map:hover,
+.back-map-always:hover,
+.wiki-btn:hover,
+.played-pill:hover,
+.played-btn:hover,
+.toggle-raw:hover {
+  filter: brightness(150%);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background:
+    linear-gradient(145deg, #4a6078 0%, #364a60 50%, #2c3d52 100%) padding-box,
+    linear-gradient(145deg, #d4a94f, #7a5a22 50%, #c49a42) border-box;
+}
+
+button:disabled,
+.disabled,
+.filter-select:not(.has-selection) + .select-clear-btn {
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(1) brightness(75%);
+}
 </style>
 </head>
 <body>
